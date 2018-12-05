@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>three.js css3d renderer - webGL renderer</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+      body {
+        background-color: #000000;
+        margin: 0;
+        cursor: move;
+        overflow: hidden;
+        width=100vw;
+        height=100vh; 
+      }
+
+      #space {
+        left: 0vw;
+        top: 0vh;
+        width: 100vw;
+        height: 100vh;
+        display: block;
+        position: fixed;
+        pointer-events: none; // auto
+        background-color: transparent;
+        z-index: 5; //0
+      }
+    </style>
+  </head>
+  <body id="b">
+    <canvas id="space"></canvas>
+
+    <script src="../libs/three.js"></script>
+    <script src="../libs/CSS3DRenderer.js"></script>
+    <script src="../libs/TrackballControls.js"></script>
+    <script src="../libs/FlyControls.js"></script>
+    <script src="../libs/tween.js"></script>
+
+    <script src="./renderers.js"> </script>
+  </body>
+</html>
+

@@ -1,0 +1,41 @@
+{
+  "name": "payments",
+  "model": {
+    "scene": {
+      "filters": { 
+      },
+      "transform": "translate(50, 50) scale(0.9)",
+      "rendering": "template",
+      "update":true
+    },
+    "piechart": {
+      "name": "piechart",
+      "rendering":"template",
+      "update":true,
+      "transform": "translate(-75,-55) scale(.15)",
+
+      "width": 100,  
+      "height": 100,
+      "radius": 50,
+      "innerRadius": 20,
+      "dimension": "byType",
+      "group": "transactionsByType"
+    },
+    "barchart": {
+      "name": "barchart",
+      "rendering":"template",
+      "update":true,
+      "transform": "translate(-56,-75) scale(.12)",
+
+      "width": 100,  
+      "height": 100,
+      "dimension": "byQuantity",
+      "group": "salesByQuantityr",
+      "x": "d3.scale.linear().domain([0,7])",
+      "y": "d3.scale.linear().domain([0,12])",
+      "centerBar": true
+    }
+  },
+  "shot":{}
+}
+

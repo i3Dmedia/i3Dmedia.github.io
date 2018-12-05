@@ -1,0 +1,164 @@
+/* scrollTo/localScroll/jQ-parallax CSS for html-channels */
+/* svg .stage and canvas-webGL .singularity also */
+/*
+ * global
+ */
+@font-face {
+  font-family: "Neuropol";
+  src: url(../fonts/neuropol.ttf); 
+}
+body {
+  left: 0vw;
+  top: 0vh;
+  width: 100vw;
+  height: 100vh;
+  /*
+  background-image: -webkit-gradient(linear, left center, right center, from(#110000), color-stop(39%, #444444), to(#001100));
+  background-image: -moz-linear-gradient(left, #110000, #444444 39%, #001100);
+  */
+  background-color: transparent;
+}
+
+/* 
+ * mediaweb
+ */
+/* text */
+.mediaweb h1, h2, h3, h5, h6 { 
+  font-family: 'Neuropol';
+  text-shadow: 0 -2px 3px #aaaaaa, 0 -4px 3px #666666;
+}
+.mediaweb h4 { 
+  font-family: 'Neuropol';
+  text-shadow: 0 -1px 2px #aaaaaa, 0 -2px 2px #666666;
+}
+.mediaweb .vertical {
+  padding: 0px;
+  margin: 0px;
+  position: absolute;
+  width: 1em;
+  font-size: 16px;
+  line-height: 12px;
+  /*color: #fff; */
+  color: #ccc;
+}
+
+/* links */
+.mediaweb a {
+  font-family: 'Neuropol';
+  /*font-family: 'calibri';*/
+  text-decoration: none;
+  color: #fff;
+}
+.mediaweb a:hover, a:active {
+  color: #9685BA; 
+}
+
+
+/* 
+ * graphics 
+ */
+/* [1] svg stage - w:100vw h:100vh - channel groups
+ * The svg uses viewBox 100x100 vector space coordinates set with
+ * upper-left corner at (0,0) so 1x1 vsp unit = 1x1 viewport unit
+ * svg uses preserveAspectRatio = 'none' so despite the viewport
+ * size or aspect ratio the vector space remains isometric.
+ * 2D-cinematography by svg translation-dolly, scale-zoom, rotate-roll 
+ * NOTE: .stage pointer-events: none to allow mouse to affect .leftnav and #pad
+ * NOTE: #2D div containing svg element id='s' has z-index 1000  
+ */
+.mediaweb .stage {
+  display: block;
+  position: fixed;
+  left: 0vw;
+  top:  0vh;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none; 
+  background-color: rgba(200,100,0,0.3); 
+  z-index: 1000;
+}
+
+
+/* [2] webgl space w:100vw h:100vh - channel subspaces */
+/* 3D cinematography by webGL transform */
+/* NOTE: #3D canvas element has z-index 10  */
+.mediaweb .space {
+  display: block;
+  position: fixed;
+  left: 0vw;
+  top:  0vh;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  /* background-color: rgba(200,100,0,0.3); */
+  z-index: 10;
+}
+
+
+
+/* [3] channels */
+/*
+ * NOTE: channel containers have z-index 0
+ * NOTE: fragment elements have z-indices < 0
+ * filters are fragments with background-color: rgba() (alpha < 1)
+ * fragments with z-index greater than z-index of filter
+ * are unfiltered
+ * fragments with z-index less than filter z-index are filtered!
+ * NOTE: channel buttons are at z-index 1000 and jparallax pad has z-index 999
+ */
+.mediaweb .channel {
+  left: 0vw;
+  top:  0vh;
+  width: 100vw;
+  height: 100vh;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  z-index: 0;
+}
+/* channel navigation - img-icon links */
+/* offset from top for channel-nav button column */ 
+.mediaweb .left-nav-offset {
+  height: 0vh;
+}
+/* HTML div-backgrounds contained in channel */
+/* channel-change fragments parallax, interactive jparallax */
+.mediaweb .fragment {
+  display: block;
+  position:absolute;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+  color: #fff;
+  /* these are NOT inherited!? */
+  /* background-size: cover;
+  background-repeat: no-repeat;*/
+}
+/* jparallax fragment/image overlay */
+.mediaweb .parallax-viewport {
+  position: relative;     
+  overflow: hidden;
+}
+.mediaweb .parallax-layer {
+  position: absolute;
+}
+
+/* channels UI */
+/* channel-nav button column */
+.mediaweb .left-nav{
+  display: block;
+  position: absolute;
+  z-index: 100;
+}
+/* jparallax pointer-control pad */
+.mediaweb #pad {
+  display: block;
+  position: fixed; 
+  top: 90vh;
+  left: 0vw;
+  width: 5vw;
+  height: 10vh;
+  background-color: rgba(255,255,255,0.3);
+  z-index: 99;
+}
+

@@ -1,0 +1,95 @@
+<!-- later add canvas 100% to #u1-2-2 --> 
+<!-- possibly later add background-image layer(s) to divs in #u1-2-2 --> 
+<!-- NOTE: only for some templates - for exp: template2 has no images-->
+<script src="./example.js"></script>
+      <style> 
+         body {
+            background: #dddddd;
+         }
+
+         #canvas {
+            margin-left: 10px;
+            margin-top: 10px;
+            background: #ffffff;
+            border: thin solid #aaaaaa;
+         }
+
+         #glasspane {
+            position: absolute;
+            left: 50px;
+            top: 50px;
+            padding: 0px 20px 10px 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border: thin solid rgba(0, 0, 0, 0.6);
+            color: #eeeeee;
+            font-family: Droid Sans, Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            cursor: pointer;
+            -webkit-box-shadow: rgba(0,0,0,0.5) 5px 5px 20px;
+            -moz-box-shadow: rgba(0,0,0,0.5) 5px 5px 20px;
+            box-shadow: rgba(0,0,0,0.5) 5px 5px 20px;
+         }
+
+         #glasspane h2 {
+            font-weight: normal;
+         }
+
+         #glasspane .title {
+            font-size: 2em;
+            color: rgba(255, 255, 0, 0.8);
+         }
+
+         #glasspane a:hover {
+            color: yellow;
+         }
+
+         #glasspane a {
+            text-decoration: none;
+            color: #cccccc;
+            font-size: 3.5em;
+         }
+
+         #glasspane p {
+            margin: 10px;
+            color: rgba(65, 65, 220, 1.0);
+            font-size: 12pt;
+            font-family: Palatino, Arial, Helvetica, sans-serif;
+         }
+       </style>
+<div id='glasspane'>
+<div class='t2' id='u1-2-2' >
+    <p>One hundred balls bouncing</p>
+    <p style="text-align:center">{{correct}}</p>
+    <span ng-repeat="item in words" style="text-align:center">
+        </br></br>
+        <div>
+            <button ng-disabled="disabled" ng-click=chosen(item)>{{item}}</button>
+        </div>
+    </span>
+</div>
+<a id='startButton'>Start</a>
+<canvas id='canvas' width='750' height='500'>
+  Canvas not supported
+</canvas>
+</div>
+
+<!-- NOTE: dynamically attach eventListeners for 'onended' -->
+<!-- D010, hat, bat (correct). Note: this is also vo for ex0-->
+<div id='dvo'>
+  <audio id='directions' preload="auto" src="../units/audio/glasspane/dvo/D010.mp3"></audio>
+  <audio id='incorrect' preload="auto" src="../units/audio/glasspane/dvo/incorrect.mp3"></audio>
+  <audio id='correct' preload="auto" src="../units/audio/glasspane/dvo/correct.mp3"></audio>
+</div>
+
+<!-- vo for correct word = unit['exercise']['words'][k][0] k=1 to 6-->
+<div id='vo'>
+  <audio id='w1' preload="auto" src="../units/audio/glasspane/u1-2-2/w1.mp3"></audio>
+  <audio id='w2' preload="auto" src="../units/audio/glasspane/u1-2-2/w2.mp3"></audio>
+  <audio id='w3' preload="auto" src="../units/audio/glasspane/u1-2-2/w3.mp3"></audio>
+  <audio id='w4' preload="auto" src="../units/audio/glasspane/u1-2-2/w4.mp3"></audio>
+  <audio id='w5' preload="auto" src="../units/audio/glasspane/u1-2-2/w5.mp3"></audio>
+  <audio id='w6' preload="auto" src="../units/audio/glasspane/u1-2-2/w6.mp3"></audio>
+  <audio id='w7' preload="auto" src="../units/audio/glasspane/u1-2-2/w7.mp3"></audio>
+</div>
+
+

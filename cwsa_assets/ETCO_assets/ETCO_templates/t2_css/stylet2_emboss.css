@@ -1,0 +1,94 @@
+
+* {
+  margin: 200;
+  padding: 200;
+}
+
+body {
+  -webkit-user-select: none;
+  cursor: default;
+}
+
+/* Basic Type Presets */
+h2 {
+  line-height: 28px;
+  font-family: Helvetica, sans-serif;  
+  margin-bottom: 20px;
+}
+
+#header {
+  height: 25px;
+  text-align: center;
+  font: 12px/25px Helvetica, sans-serif;
+  color: black;
+  background: #e0e0fe;
+}
+
+#header a {
+	color: purple;
+}
+
+
+
+
+/*  Button1 START  */
+#button1 {
+  background-image: linear-gradient(180deg, hsl(240,100%,95%), hsl(240,40%,95%) );
+  border: 3px solid white;
+  border-style: outset;
+  height: 55px;
+  width: 257px;
+  margin: 50px 0 0 50px;
+  overflow: hidden;
+  display: block;
+  text-align: center;
+  font: 28px "Comic Sans MS", cursive, sans-serif;
+  color: black;
+  line-height: 55px;
+  text-shadow: 0px 2px 0px rgba(255, 255, 255, 0.6);
+
+  /*Transition*/
+  -webkit-transition: All 0.2s ease;
+  -moz-transition: All 0.2s ease;
+  -o-transition: All 0.2s ease;
+  -ms-transition: All 0.2s ease;
+  transition: All 0.2s ease;
+  
+  /*Rounded Corners*/
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+
+ 
+}
+
+#button1:after{	
+	content:"";
+	background-image: linear-gradient(180deg, hsl(238,100%,95%), hsl(240,40%,95%) );
+	  border: 5px solid #666666;
+	  height: 56px;
+	  width: 259px;
+	  margin: 50px 0 0 50px;
+      position:absolute;
+	   left:5px;
+	   top:-3px;
+	   z-index:-1;	
+	  -webkit-border-radius: 20px;
+	  -moz-border-radius: 20px;
+	  border-radius: 20px;
+	
+	 /*Shadow*/
+	box-shadow: 0 1px 0 #666, 0 3px 3px rgba(0,0,0,0.3);
+}
+#button1:hover {
+  background-color: #e4e5ff;
+  border: 3px solid gold;
+  box-shadow: 0 1px 0 gold, 0 3px 3px rgba(0,0,0,0.3);
+
+}
+
+/*  Button1 END  */
+
+
+
+

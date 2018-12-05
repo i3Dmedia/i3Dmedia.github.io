@@ -1,0 +1,48 @@
+ {"unit" : "u1-2-2",
+   "t":"t2",
+   "exercises": {
+     "words":
+       [[" bat"," hat"],
+        [" fat"," hat"],
+        [" mat"," nat"],
+        [" pat"," bat"],
+        [" rat"," rap"],
+        [" cat"," cot"],
+        [" sat"," sap"]],
+     "callbacks": [
+        {"o":"Presentation","m":"speak","a":[" D010"," hat"," bat"]},
+        {"o":"Presentation","m":"speak","a":[" f"," a"," t"," fat"]},
+        {"o":"Presentation","m":"speak","a":[" m"," a"," t"," mat"]},
+        {"o":"Presentation","m":"speak","a":[" p"," a"," t"," pat"]},
+        {"o":"Presentation","m":"speak","a":[" r"," a"," t"," rat"]},
+        {"o":"Presentation","m":"speak","a":[" c"," a"," t"," cat"]},
+        {"o":"Presentation","m":"speak","a":[" s"," a"," t"," sat"]}]},
+   "wordIndices": [{"hat":1, "bat":2},
+                   {"hat":1, "fat":2},
+                   {"mat":1, "nat":2},
+                   {"bat":1, "pat":2},
+                   {"rap":1, "rat":2},
+                   {"cot":1, "cat":2},
+                   {"sat":1, "sap":2}],
+   "reports": [{"hat":0, "bat":0},
+                   {"hat":0, "fat":0},
+                   {"mat":0, "nat":0},
+                   {"bat":0, "pat":0},
+                   {"rap":0, "rat":0},
+                   {"cot":0, "cat":0},
+                   {"sat":0, "sap":0}],
+   "directions":[]
+   "resources":"<audio id='correct' preload='auto' src='../units/audio/t2/dvo/correct.mp3'></audio>
+</div>
+
+<!-- vo for correct word = unit['exercise']['words'][k][0] k=1 to 6-->
+<div id='vo'>
+  <audio id='w1' preload='auto' src='../units/audio/t2/u1-2-2/w1.mp3'></audio>
+  <audio id='w2' preload='auto' src='../units/audio/t2/u1-2-2/w2.mp3'></audio>
+  <audio id='w3' preload='auto' src='../units/audio/t2/u1-2-2/w3.mp3'></audio>
+  <audio id='w4' preload='auto' src='../units/audio/t2/u1-2-2/w4.mp3'></audio>
+  <audio id='w5' preload='auto' src='../units/audio/t2/u1-2-2/w5.mp3'></audio>
+  <audio id='w6' preload='auto' src='../units/audio/t2/u1-2-2/w6.mp3'></audio>
+  <audio id='w7' preload='auto' src='../units/audio/t2/u1-2-2/w7.mp3'></audio>
+</div>"
+}

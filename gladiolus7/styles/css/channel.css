@@ -1,0 +1,49 @@
+/* scrollTo/localScroll/jQ-parallax CSS for channels */
+@font-face {
+  font-family: "Neuropol";
+  src: url(../fonts/neuropol.ttf); 
+}
+body{
+  width: 100vw;
+  height: 100vh;
+  background-image: -webkit-gradient(linear, left center, right center, from(#110000), color-stop(39%, #444444), to(#001100));
+  background-image: -moz-linear-gradient(left, #110000, #444444 39%, #001100);
+  background-size: 200%;
+  /* background-color: black;*/
+}
+
+h1, h2, h3 { 
+  font-family: 'Neuropol';
+  text-shadow: 0 -2px 3px #aaaaaa, 0 -4px 3px #666666;
+}
+h4 { 
+  font-family: 'Neuropol';
+  text-shadow: 0 -1px 2px #aaaaaa, 0 -2px 2px #666666;
+}
+a {
+  color: #fff;
+}
+a:hover, a:active {
+  text-decoration: underline;
+  color: #9685BA; 
+}
+
+/* channels */
+.channel {
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  z-index: 1;
+  overflow: hidden;
+}
+.filter {
+  position: absolute;
+  z-index: -1;
+}
+.left-nav-offset {
+  height: 60px;
+}
+.left-nav{
+  display: block;
+}
+

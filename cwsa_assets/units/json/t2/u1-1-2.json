@@ -1,0 +1,158 @@
+ {
+    "unit" : "u1-1-2",
+    "t" : "t2",
+    "exercises" : {
+        "words" : [["bat"," hat"],["fat"," hat"],["mat"," nat"],["pat"," bat"],["rat"," rap"],["cat"," cot"],["sat"," sap"]],
+        "callbacks" : [{
+            "o" : "Presentation",
+            "m" : "speak",
+            "a" : [" D010","hat"," bat"]
+        },
+        {
+            "o" : "Presentation",
+            "m" : "speak",
+            "a" : [" f","a","t","fat"]
+        },
+        {
+            "o" : "Presentation",
+            "m" : "speak",
+            "a" : ["m"," a","t","mat"]
+        },
+        {
+            "o" : "Presentation",
+            "m" : "speak",
+            "a" : [" p","a"," t","pat"]
+        },
+        {
+            "o" : "Presentation",
+            "m" : "speak",
+            "a" : [" r","a"," t","rat"]
+        },
+        {
+            "o" : "Presentation",
+            "m" : "speak",
+            "a" : [" c","a"," t","cat"]
+        },
+        {
+            "o" : "Presentation",
+            "m" : "speak",
+            "a" : [" s"," a"," t"," sat"]
+        }]
+    },
+    "wordIndices" : [{
+        "bat" : 1,
+        "hat" : 2
+    },
+    {
+        "hat" : 1,
+        "fat" : 2
+    },
+    {
+        "mat" : 1,
+        "nat" : 2
+    },
+    {
+        "bat" : 1,
+        "pat" : 2
+    },
+    {
+        "rap" : 1,
+        "rat" : 2
+    },
+    {
+        "cot" : 1,
+        "cat" : 2
+    },
+    {
+        "sat" : 1,
+        "sap" : 2
+    }],
+    "reports" : [{
+        "bat" : 0,
+        "hat" : 0
+    },
+    {
+        "fat" : 0,
+        "hat" : 0
+    },
+    {
+        "mat" : 0,
+        "nat" : 0
+    },
+    {
+        "pat" : 0,
+        "bat" : 0
+    },
+    {
+        "rat" : 0,
+        "rap" : 0
+    },
+    {
+        "cat" : 0,
+        "cot" : 0
+    },
+    {
+        "sat" : 0,
+        "sap" : 0
+    }],
+    "directions" : [{
+        "o" : "Presentation",
+        "m" : "speak",
+        "a" : "D010",
+        "t" : 3000
+    },
+    {
+        "o" : "hand",
+        "m" : "moveTo",
+        "a" : "hat",
+        "t" : 3000
+    },
+    {
+        "o" : "Presentation",
+        "m" : "speak",
+        "a" : "hat",
+        "t" : 3000
+    },
+    {
+        "o" : "hand",
+        "m" : "moveTo",
+        "a" : "bat",
+        "t" : 3000
+    },
+    {
+        "o" : "Presentation",
+        "m" : "speak",
+        "a" : "bat",
+        "t" : 3000
+    },
+    {
+        "o" : "hand",
+        "m" : "moveTo",
+        "a" : "offstage",
+        "t" : 3000
+    }],
+    "resources" : {
+        "audio" : "<div id='dvo'>  <audio id='directions' preload='auto' src='http://cavaradossi/cwsa_assets/units/audio/t2/dvo/D010.mp3'></audio> <audio id='incorrect' preload='auto' src='http://cavaradossi/cwsa_assets/units/audio/t2/dvo/incorrect.mp3'></audio> <audio id='correct' preload='auto' src='http://cavaradossi/cwsa_assets/units/audio/t2/dvo/correct.mp3'></audio> </div> <div id='vo'>  <audio id='w1' preload='auto' src='http://cavaradossi/cwsa_assets/units/audio/t2/u1-1-2/w1.mp3'></audio> <audio id='w2' preload='auto' src='http://cavaradossi/cwsa_assets/units/audio/t2/u1-1-2/w2.mp3'></audio> <audio id='w3' preload='auto' src='http://cavaradossi/cwsa_assets/units/audio/t2/u1-1-2/w3.mp3'></audio> <audio id='w4' preload='auto' src='http://cavaradossi/cwsa_assets/units/audio/t2/u1-1-2/w4.mp3'></audio> <audio id='w5' preload='auto' src='http://cavaradossi/cwsa_assets/units/audio/t2/u1-1-2/w5.mp3'></audio> <audio id='w6' preload='auto' src='http://cavaradossi/cwsa_assets/units/audio/t2/u1-1-2/w6.mp3'></audio> <audio id='w7' preload='auto' src='http://cavaradossi/cwsa_assets/units/audio/t2/u1-1-2/w7.mp3'></audio> </div>"
+    },
+    "pictures" : [{
+        "id" : "p0",
+        "url" : "../../cwsa_assets/img/pictures/bat_baseball_clr.jpg",
+        "display" : "block"
+    },
+    {
+        "id" : "p1",
+        "url" : "../../cwsa_assets/img/pictures/bat_baseball_gry.jpg",
+        "display" : "block"
+    },
+    {
+        "id" : "p2",
+        "url" : "../../cwsa_assets/img/pictures/bat_rodent_clr.jpg",
+        "display" : "block"
+    },
+    {
+        "id" : "p3",
+        "url" : "../../cwsa_assets/img/pictures/bat_rodent_gry.jpg",
+        "display" : "block"
+    }]
+}
+

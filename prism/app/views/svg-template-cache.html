@@ -1,0 +1,438 @@
+<!-- svg-template-cache.html -->
+
+
+<!-- generative procedural  D3 template -->
+<script type="text/ng-template" id="h_barchart.svg">
+<g id="scene" width='100%' height='100%'>  
+  <g id="h_barchart" width='100%' height='100%' transform="translate(50,50) scale(0.45, 0.4)" style='pointer-events:auto'/>  
+</g>
+</script
+
+<!-- generative parsed actions D3 template -->
+<script type="text/ng-template" id="scale.svg">
+<g id='scene' width='100%' height='100%' ng-attr-transform='{{sD.shot.scene.transform}}' >
+  <g id='scale' width='100%' height='100%' ng-attr-transform='{{sD.shot.scale.transform}}'  style='pointer-events:auto'></g>
+</g>
+</script>
+<!-- generative D3 template -->
+
+
+<!-- vega-barcharts -->
+<script type="text/ng-template" id="barchart.svg">
+<g id='scene' width='100%' height='100%' ng-attr-transform='{{sD.shot.scene.transform}}'>
+  <g id='barchart' width='100%' height='100%' ng-attr-transform='{{sD.shot.barchart.transform}}' style='pointer-events:auto'></g>
+</g>
+</script>
+
+<script type="text/ng-template" id="map.svg">
+<g id='scene' width='100%' height='100%' ng-attr-transform='{{sD.shot.scene.transform}}'>
+  <g id='map' width='100%' height='100%' ng-attr-transform='{{sD.shot.map.transform}}' style='pointer-events:auto'></g>
+</g>
+</script>
+
+<script type="text/ng-template" id="stocks.svg">
+<g id='scene' width='100%' height='100%' ng-attr-transform='{{sD.shot.scene.transform}}'>
+  <g id='stocks' width='100%' height='100%' ng-attr-transform='{{sD.shot.stocks.transform}}' style='pointer-events:auto'></g>
+</g>
+</script>
+
+<script type="text/ng-template" id="area.svg">
+<g id='scene' width='100%' height='100%' ng-attr-transform='{{sD.shot.scene.transform}}'>
+  <g id='area' width='100%' height='100%' ng-attr-transform='{{sD.shot.area.transform}}' style='pointer-events:auto'></g>
+</g>
+</script>
+
+
+<script type="text/ng-template" id="footprint.svg">
+<g id='scene' width='100%' height='100%' ng-attr-transform='{{sD.shot.scene.transform}}'>
+  <g id='map' width='100%' height='100%' ng-attr-transform='{{sD.shot.map.transform}}' style='pointer-events:auto' ></g>
+  <g id='barchart' width='100%' height='100%' ng-attr-transform='{{sD.shot.barchart.transform}}' style='pointer-events:auto' ></g>
+  <g id="textboxes" ng-attr-transform='{{sD.shot.textboxes.transform}}' font-family="{{sD.model.textboxes.font-family}}" font-size="3pt" >
+  
+    <g ng-repeat = "box in sD.model.textboxes.textboxes" 
+       ng-attr-id="{{box.label}}" 
+       ng-attr-transform="{{box.transform}}">
+      
+      <text x="0" y="2" style="fill:black" font-size="2pt">
+        {{box.label}}
+      </text>
+      
+      <polygon id="arrow" points="0,7 2,3 4,7" style="stroke:blue; stroke-width:0.3; fill:#ddd" opacity='0.6' ng-attr-transform="{{box.arrow.transform}}" >
+      </polygon>
+  
+      <text x="6" y="6" style="fill:black">
+        {{box.value}}
+      </text>
+  
+      <rect id="rg" x="6" y="3" width="18.0" height="4.0" style="fill:white"
+        opacity='0.3'>
+      </rect>
+    </g>
+  </g>
+</g>
+</script>
+
+<script type="text/ng-template" id="footprint_gb.svg">
+<g id='scene' width='100%' height='100%' ng-attr-transform='{{sD.shot.scene.transform}}'>
+  <g id='area' width='100%' height='100%' ng-attr-transform='{{sD.shot.area.transform}}' style='pointer-events:auto' render-order='0' ></g>
+  <g id='map' width='100%' height='100%' ng-attr-transform='{{sD.shot.map.transform}}' style='pointer-events:auto' ></g>
+  <g id='grouped_bar' width='100%' height='100%' ng-attr-transform='{{sD.shot.grouped_bar.transform}}' style='pointer-events:auto' render-order='1'></g>
+  <g id="textboxes" ng-attr-transform='{{sD.shot.textboxes.transform}}' font-family="{{sD.model.textboxes.font-family}}" font-size="3pt" >
+  
+    <g ng-repeat = "box in sD.model.textboxes.textboxes" 
+       ng-attr-id="{{box.label}}" 
+       ng-attr-transform="{{box.transform}}">
+      
+      <text x="0" y="2" style="fill:black" font-size="2pt">
+        {{box.label}}
+      </text>
+      
+      <polygon id="arrow" points="0,7 2,3 4,7" style="stroke:blue; stroke-width:0.3; fill:#ddd" opacity='0.6' ng-attr-transform="{{box.arrow.transform}}" >
+      </polygon>
+  
+      <text x="6" y="6" style="fill:black">
+        {{box.value}}
+      </text>
+  
+      <rect id="rg" x="6" y="3" width="18.0" height="4.0" style="fill:white"
+        opacity='0.3'>
+      </rect>
+    </g>
+  </g>
+</g>
+</script>
+<!-- vega-barcharts -->
+
+
+
+<!-- textboxes chart -->
+<script type="text/ng-template" id="textboxes.svg" >
+<g id="textboxes" 
+   font-family="{{textboxes.font-family}}" 
+   font-size="3pt" >
+
+  <g ng-repeat = "box in textboxes" 
+     ng-attr-id="{{box.label}}" 
+     transform="translate(0,0) scale(1.0,1.1)">
+    
+    <text x="0" y="2" style="fill:black" font-size="2pt">
+      {{box.label}}
+    </text>
+    
+    <polygon points="0,7 2,3 4,7" style="stroke:blue; stroke-width:0.3;
+      fill:#ddd" opacity='0.6' ng-attr-transform="rotate({{box.arrow-rotation}},2,5)">
+    </polygon>
+
+    <text x="6" y="6" style="fill:black">
+      {{box.value}}
+    </text>
+
+    <rect id="rg" x="6" y="3" width="18.0" height="4.0" style="fill:white"
+      opacity='0.3'>
+    </rect>
+  </g>
+</g><!-- textboxes -->
+</script>
+
+
+
+<!-- simple circle -->
+<!-- used for alpha test 'opening' -->
+<script type="text/ng-template" id="circle.svg">
+<circle ng-attr-cx = "{{sD.model.scene.x}}" 
+        ng-attr-cy = "{{sD.model.scene.y}}"
+        ng-attr-r = "{{sD.model.scene.r}}"
+        ng-attr-fill = "{{sD.model.scene.fill}}"
+        style='pointer-events:auto'>
+</circle>
+</script>
+
+
+<!-- general scene of repeated groups -->
+<!-- rect as child element used for alpha test 'scene1' -->
+<script type="text/ng-template" id="scene.svg" >
+<g ng-attr-id = "{{sD.model.scene.id}}" ng-attr-transform = "{{sD.model.scene.transform}}">
+  <g ng-repeat = "actors in sD.model.scene.actors"
+     ng-attr-id = "{{actors.id}}"
+     ng-attr-transform = "{{actors.transform}}">
+       <rect x='40' y='40' width='20' height='5' fill='blue'/>
+     style='pointer-events:auto'
+  </g>
+</script>
+
+
+
+<!-- dc actors - root elements for generative imperative code -->
+<!-- used for alpha test 'payments' -->
+<script type="text/ng-template" id="payments.svg" >
+<g id = "payments" ng-attr-transform = "{{sD.model.scene.transform}}">
+
+<g id="piechart" ng-attr-transform="{{sD.model.piechart.transform}}">
+<g class="pie-slice _0"  style='pointer-events:auto' >
+<path fill="#3182bd" d="M0,-125A125,125 0 0,1 108.25317547305484,-62.5L43.30127018922194,-25A50,50 0 0,0 0,-50Z">
+</path>
+<title>
+visa: 3</title>
+</g>
+
+<g class="pie-slice _1">
+<path fill="#6baed6" d="M108.25317547305484,-62.5A125,125 0 0,1 108.25317547305485,62.49999999999998L43.30127018922194,24.999999999999993A50,50 0 0,0 43.30127018922194,-25Z">
+</path>
+<title>
+cash: 3</title>
+</g>
+
+<g class="pie-slice _2">
+<path fill="#9ecae1" d="M108.25317547305485,62.49999999999998A125,125 0 1,1 -2.2962127451996132e-14,-125L-9.184850980798453e-15,-50A50,50 0 1,0 43.30127018922194,24.999999999999993Z">
+</path>
+<title>
+tab: 12</title>
+</g>
+
+<text class="pie-slice _0" text-anchor="middle" transform="translate(43.75,-75.7772216796875)">
+visa</text>
+<text class="pie-slice _1" text-anchor="middle" transform="translate(87.5,0)">
+cash</text>
+<text class="pie-slice _2" text-anchor="middle" transform="translate(-75.7772216796875,43.75)">
+tab</text>
+</g> <!-- piechart -->
+
+
+<g id="barchart" ng-attr-transform="{{sD.model.barchart.transform}}"   style='pointer-events:auto'>
+<!-- barchart -->
+<defs>
+<clipPath id="bar-chart-clip">
+<!--<rect width="420" height="210">-->
+<rect width="420" height="250">
+</rect>
+</clipPath>
+</defs>
+
+<g class="chart-body"  clip-path="url(#bar-chart-clip)">
+<g class="stack _0">
+<rect class="bar" fill="#1f77b4" height="140" width="58" y="70" x="31">
+<title>
+1: 8</title>
+</rect>
+<rect class="bar" fill="#1f77b4" height="52.5" width="58" y="157.5" x="91">
+<title>
+2: 3</title>
+</rect>
+<rect class="bar" fill="#1f77b4" height="35" width="58" y="175" x="151">
+<title>
+3: 2</title>
+</rect>
+<rect class="bar" fill="#1f77b4" height="35" width="58" y="175" x="211">
+<title>
+4: 2</title>
+</rect>
+<rect class="bar" fill="#1f77b4" height="35" width="58" y="175" x="270.99999999999994">
+<title>
+5: 2</title>
+</rect>
+<rect class="bar" fill="#1f77b4" height="17.5" width="58" y="192.5" x="331">
+<title>
+6: 1</title>
+</rect>
+</g>
+</g>
+<g class="axis x" transform="translate(30,220)">
+<g class="tick major" transform="translate(0,0)" style="opacity: 1;">
+<line y2="6" x2="0">
+</line>
+<text y="9" dy=".71em" x="0" style="text-anchor: middle;">
+0</text>
+</g>
+<g class="tick major" transform="translate(60,0)" style="opacity: 1;">
+<line y2="6" x2="0">
+</line>
+<text y="9" dy=".71em" x="0" style="text-anchor: middle;">
+1</text>
+</g>
+<g class="tick major" transform="translate(120,0)" style="opacity: 1;">
+<line y2="6" x2="0">
+</line>
+<text y="9" dy=".71em" x="0" style="text-anchor: middle;">
+2</text>
+</g>
+<g class="tick major" transform="translate(180,0)" style="opacity: 1;">
+<line y2="6" x2="0">
+</line>
+<text y="9" dy=".71em" x="0" style="text-anchor: middle;">
+3</text>
+</g>
+<g class="tick major" transform="translate(240,0)" style="opacity: 1;">
+<line y2="6" x2="0">
+</line>
+<text y="9" dy=".71em" x="0" style="text-anchor: middle;">
+4</text>
+</g>
+<g class="tick major" transform="translate(299.99999999999994,0)" style="opacity: 1;">
+<line y2="6" x2="0">
+</line>
+<text y="9" dy=".71em" x="0" style="text-anchor: middle;">
+5</text>
+</g>
+<g class="tick major" transform="translate(360,0)" style="opacity: 1;">
+<line y2="6" x2="0">
+</line>
+<text y="9" dy=".71em" x="0" style="text-anchor: middle;">
+6</text>
+</g>
+<g class="tick major" transform="translate(420,0)" style="opacity: 1;">
+<line y2="6" x2="0">
+</line>
+<text y="9" dy=".71em" x="0" style="text-anchor: middle;">
+7</text>
+</g>
+<path class="domain" d="M0,6V0H420V6">
+</path>
+</g>
+<g class="axis y" transform="translate(30,10)">
+<g class="tick major" transform="translate(0,210)" style="opacity: 1;">
+<line x2="-6" y2="0">
+</line>
+<text x="-9" dy=".32em" y="0" style="text-anchor: end;">
+0</text>
+</g>
+<g class="tick major" transform="translate(0,175)" style="opacity: 1;">
+<line x2="-6" y2="0">
+</line>
+<text x="-9" dy=".32em" y="0" style="text-anchor: end;">
+2</text>
+</g>
+<g class="tick major" transform="translate(0,140)" style="opacity: 1;">
+<line x2="-6" y2="0">
+</line>
+<text x="-9" dy=".32em" y="0" style="text-anchor: end;">
+4</text>
+</g>
+<g class="tick major" transform="translate(0,105)" style="opacity: 1;">
+<line x2="-6" y2="0">
+</line>
+<text x="-9" dy=".32em" y="0" style="text-anchor: end;">
+6</text>
+</g>
+<g class="tick major" transform="translate(0,70)" style="opacity: 1;">
+<line x2="-6" y2="0">
+</line>
+<text x="-9" dy=".32em" y="0" style="text-anchor: end;">
+8</text>
+</g>
+<g class="tick major" transform="translate(0,35.00000000000003)" style="opacity: 1;">
+<line x2="-6" y2="0">
+</line>
+<text x="-9" dy=".32em" y="0" style="text-anchor: end;">
+10</text>
+</g>
+<g class="tick major" transform="translate(0,0)" style="opacity: 1;">
+<line x2="-6" y2="0">
+</line>
+<text x="-9" dy=".32em" y="0" style="text-anchor: end;">
+12</text>
+</g>
+<path class="domain" d="M-6,0H0V210H-6">
+</path>
+</g>
+<g class="brush" transform="translate(30,10)" style="pointer-events: all;">
+<rect class="background" x="0" width="420" height="210" style="visibility: hidden; cursor: crosshair;">
+</rect>
+<rect class="extent" x="0" width="0" height="210" style="cursor: move;">
+</rect>
+<g class="resize e" transform="translate(0,0)" style="cursor: ew-resize; display: none;">
+<rect x="-3" width="6" height="210" style="visibility: hidden;">
+</rect>
+<path d="M0.5,70A6,6 0 0 1 6.5,76V134A6,6 0 0 1 0.5,140ZM2.5,78V132M4.5,78V132">
+</path>
+</g>
+<g class="resize w" transform="translate(0,0)" style="cursor: ew-resize; display: none;">
+<rect x="-3" width="6" height="210" style="visibility: hidden;">
+</rect>
+<path d="M-0.5,70A6,6 0 0 0 -6.5,76V134A6,6 0 0 0 -0.5,140ZM-2.5,78V132M-4.5,78V132">
+</path>
+</g>
+</g><!--barchart-->
+
+</g> <!-- payments -->
+</script>
+
+
+
+
+
+
+
+
+
+<!-- general repeated geometries for custom charts -->
+<!-- Circles -->
+<script type="text/ng-template" id="Circles.svg" >
+<g id = "{{Circles.id}}" transform = "{{Circles.transform}}">
+<circle ng-repeat = "c in circles"
+        ng-attr-cx = "{{c.x}}" 
+        ng-attr-cy = "{{c.y}}"
+        ng-attr-r = "{{c.r}}"
+        ng-attr-style = "{{c.style}}">
+</circle>
+</g>
+</script>
+
+<script type="text/ng-template" id="green_circle.svg">
+<circle cx='50' cy='50' r='20' style='fill:green'/>
+</script>
+<script type="text/ng-template" id="red_circle.svg">
+<circle cx='50' cy='50' r='20' style='fill:red'/>
+</script>
+
+
+<!-- Ellipses -->
+<script type="text/ng-template" id="/svg/Ellipses" >
+<g id = "{{Ellipses.id}}" transform = "{{Ellipses.transform}}">
+<circle ng-repeat = "e in ellipses" 
+        ng-attr-cx = "{{e.x}}" 
+        ng-attr-cy = "{{e.y}}"
+        ng-attr-rx = "{{e.rx}}"
+        ng-attr-ry = "{{e.ry}}"
+        ng-attr-style = "{{e.style}}"
+</circle>
+</g>
+</script>
+
+
+<!-- Rects -->
+<script type="text/ng-template" id="/svg/Rects" >
+<g id = "{{Rects.id}}" transform = "{Rects.transform}}">
+<rect ng-repeat = "r in rects" 
+        ng-attr-x = "{{r.x}}" 
+        ng-attr-y = "{{r.y}}"
+        ng-attr-wclassth = "{{r.w}}"
+        ng-attr-height = "{{r.h}}"
+        ng-attr-style = "{{r.style}}"
+</rect>
+</g>
+</script>
+
+
+<!-- Lines - defined by two endpoints (x1,y1),(x2,y2) -->
+<script type="text/ng-template" id="/svg/Lines" >
+<g id = "{{Lines.id}}" transform = "{{Lines.transform}}">
+<line ng-repeat = "l in lines" 
+        ng-attr-x1 = "{{l.x1}}" 
+        ng-attr-y1 = "{{l.y1}}"
+        ng-attr-x2 = "{{l.x2}}"
+        ng-attr-y2 = "{{l.y2}}"
+        ng-attr-style = "{{l.style}}"
+</line>
+</g>
+</script>
+
+
+<!-- Polylines - defined by array of point pairs, exp: [2 5, 3 10, 6 -3] -->
+<script type="text/ng-template" id="/svg/Polylines" >
+<g id = "{{Polylines.id}}" transform = "{{Polylines.transform}}">
+<polyline ng-repeat = "l in polylines" 
+        ng-attr-points = "{{l.la}}" 
+        ng-attr-style = "{{l.style}}"
+</polyline>
+</g>
+</script>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" ng-app='app'>
+<head>
+  <meta http-equiv="Content-Type" content="text/html charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>mediaweb svg-webgl cinematography</title>
+  <!-- normalize -->
+  <link href="../../app/styles/css/normalize.css" rel="stylesheet">
+  <!-- channel -->
+  <link href="../../app/styles/css/channel.css" rel="stylesheet">
+  <!-- favicon -->
+  <link rel="shortcut icon" href="./styles/ico/favicon.ico">
+</head>
+
+
+<!-- ********************************************************** -->
+<body id="port" class="mediaweb site_wrap wrap">
+
+<!-- templates - $templateCache -->
+<div ng-include="'../../app/views/svg-template-cache.html'"></div>
+
+
+
+<!-- library scripts -->
+<!-- jquery -->
+<script src="../../app/libs/jquery/jquery.min.js"></script>
+<!-- angular -->
+<script src="../../app/libs/angular/angular.min.js"></script>
+<script src="../../app/libs/angular-ui-router/release/angular-ui-router.min.js"></script>
+<!-- snap.svg -->
+<script src="../../app/libs/snap.svg/dist/snap.svg-min.js"></script>
+<!-- angular-mocks -->
+<script src="../libs/angular-mocks.js" ></script>
+
+
+<!-- prizm scripts -->
+<!-- communication of actions -->
+<script src="../../app/scripts/app.js" ></script>
+<script src="../../app/scripts/services/mixin-service.js" ></script>
+
+
+<!-- jasmine -->
+<link rel="shortcut icon" type="image/png" href="../../app/libs/jasmine/lib/jasmine-core/jasmine_favicon.png">
+<link rel="stylesheet" type="text/css" href="../../app/libs/jasmine/lib/jasmine-core/jasmine.css">
+<script src="../../app/libs/jasmine/lib/jasmine-core/jasmine.js"></script>
+<script src="../../app/libs/jasmine/lib/jasmine-core/jasmine-html.js"></script>
+<script src="../../app/libs/jasmine/lib/jasmine-core/boot.js"></script>
+
+<!-- tests -->
+<!--
+<script src="./app_test.js" ></script>
+<script src="./services/mixin-service_test.js" ></script>
+-->
+<script src="./directives/ko-actor-directive_test.js" ></script>
+
+
+
+
+<!-- inline scripting -->
+<!-- events -->
+<script type="text/javascript"> 
+$(document).ready(function() {
+  // resize
+  window.onresize = function(event) {
+    console.log("resize");
+    jQuery('.mediaweb').css({width: '100vw', height: '100vh'});
+  };
+});
+</script>
+</body>
+</html>

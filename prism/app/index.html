@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<!-- base experience: image-icons, opacity, HTML5 semantic els, hex colors, 
+  fixed positioning -->
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> 
+
+<html lang="en" class="no-js" ng-app="app">
+<head>
+  <meta http-equiv="Content-Type" content="text/html charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>prizm alpha 1.1.0</title>
+
+  <!-- normalize -->
+  <link href="./styles/css/normalize.css" rel="stylesheet">
+
+  <!-- style - channel parallax, 2D-stage 3D-space -->
+  <link href="./styles/css/channel.css" rel="stylesheet">
+
+  <!-- Fav and touch icons -->
+  <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+  <![endif]-->
+  <link rel="shortcut icon" href="./styles/ico/favicon.ico">
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="./styles/ico/apple-touch-icon-144-precomposed.png">
+
+  <!-- pre-dom libs - NOTE: modernizr not available on Google CDN -->
+  <!-- <script src="./libs/modernizr.js"></script> -->
+</head>
+
+
+
+<!-- **************************************************************** -->
+<body id="port" class="mediaweb" >
+<!--[if lt IE 7]>
+  <p class="chromeframe">You are using an <strong>outdated</strong> browser. 
+  Please <a href="http://browsehappy.com/">upgrade your browser</a> or 
+  <a href="http://www.google.com/chromeframe/?redirect=true">activate 
+  Google Chrome Frame</a> to improve your experience.</p>
+<![endif]-->
+
+
+<!-- prizm ---------------------------------->
+<div class="prizm"  ng-controller="NarrativeController" style="width:100vw; height:100vh">
+
+<!-- templates - $templateCache -->
+<div ng-include="'./views/svg-template-cache.html'"></div>
+
+<!-- UI-angular -->
+<!-- select/change state and select/apply filters -->
+<!-- <nav style="z-index:2000; pointer-events:auto; opacity:1.0; width:20vw; height:100vh; transform:scale(0.8,1.5) translate(-1vw, 18vh)" > -->
+<!-- <nav style="z-index:2000; pointer-events:auto; opacity:0.9; width:20vw; height:100vh; transform:scale(0.6,1.0) translate(-5vw,0vh)" > -->
+<nav style="z-index:2000; pointer-events:auto; opacity:0.9; width:20vw; height:70vh; transform:scale(0.8,1.0) translate(0vw,5vh)" ng-cloak>
+
+  =>state:<br/>
+  <label ng-repeat="state in states" >
+    <input type="radio"
+        value={{state}}
+        ng-model="$parent.state.name"         
+        ng-change="$parent.change_state()"
+        ng-cloak />
+        {{state}}<br/>
+      </label><br/><br/><br/><br/>
+  &&filter:<br/>
+  range [a,b]:<br/>
+  <form ng-repeat="filter in filterNames" >
+    {{filter}}<br/>
+    a:<input ng-model="filters[filter].range.a" required size={{filters[filter].size}} ng-trim><br/>
+    b:<input ng-model="filters[filter].range.b" required size={{filters[filter].size}} ng-trim ng-hide={{filters[filter].hide_b}}><br/>
+  </form>
+  <button ng-click="apply_filter()">apply</button>
+</nav>
+
+
+<!-- stage: svg graphics/text default width:100vw; height:100vh --> 
+<!-- svg translation-dolly scale-zoom; --> 
+<!-- outermost svg has width=height="100%" which is 100vw 100vh -->
+<!-- inner svg defines absolute coordinate system 1unit = 1vw x 1vh -->
+<!-- Therefore the viewport is always 100 dynamic aspect-ratio units --> 
+<!-- z-index: 1000 for div but (for now) undefined for svg -->
+<!-- However svg defined first => top of display list -->
+<div id="2D" class="stage" >
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" id="s" width="100%" height="100%" viewBox="0, 0, 100, 100" preserveAspectRatio="none" ui-view> 
+  <!-- later use Camera2D in opening-controller to load grid.svg -->
+  <g id="opening">
+  <defs>
+    <!-- lines -->
+    <line id="h" x1="-200" y1="0" x2="300" y2="0"/>
+    <line id="v" x1="0" y1="-200" x2="0" y2="300"/>
+  
+    <!-- universal animateMotion cloned for path cinematography and object animation -->
+    <animateMotion id="am" /> 
+  </defs>
+  
+  
+  
+  <!-- origin marker -->
+  <circle id="cr" cx="50" cy="50" r="2" style="fill:red" />
+  <!-- test -->
+  <rect id="rg" x="50" y="50" width="2.0" height="2.0" style="fill:green" />
+  
+  
+  <!-- ******************* channels group *************** -->
+  <g id="channels" style="display: block" >
+  <!-- m marker -->
+  <circle id="cw" cx="50" cy="50" r="0.75" style="fill:white" />
+  <!-- grid -->
+  <!-- horizontal -->
+  <g id="lines" stroke-width="0.05" stroke="black">
+  <use xlink:href="#h" y="-150"/>
+  <use xlink:href="#h" y="-100"/>
+  <use xlink:href="#h" y="-50"/>
+  <use xlink:href="#h" y="0"/>
+  <use xlink:href="#h" y="50"/>
+  <use xlink:href="#h" y="100"/>
+  <use xlink:href="#h" y="150"/>
+  <use xlink:href="#h" y="200"/>
+  <use xlink:href="#h" y="250"/>
+  <!-- vertical -->
+  <use xlink:href="#v" x="-150"/>
+  <use xlink:href="#v" x="-100"/>
+  <use xlink:href="#v" x="-50"/>
+  <use xlink:href="#v" x="0"/>
+  <use xlink:href="#v" x="50"/>
+  <use xlink:href="#v" x="100"/>
+  <use xlink:href="#v" x="150"/>
+  <use xlink:href="#v" x="200"/>
+  <use xlink:href="#v" x="250"/>
+  </g>
+  
+  <!-- vertical text: fits vertically if y=1 && font-size is 2.65 -->
+  <g id="vtext" font-family="neuropol" font-size="7.5pt" stroke="white"
+  stroke-width="0.05">
+  <text x="45" y="0" style="writing-mode: tb; glyph-orientation-vertical: 0;">
+    Prism Media
+    </text>
+  </g>
+  
+  <!-- letters marking gridpoints -->
+  <g id="letters" font-family="neuropol" font-size="1.25pt"> 
+  <!-- row1 -->
+  <text x="-150" y="-150">a</text>
+  <text x="-50" y="-150">b</text>
+  <text x="50" y="-150">c</text>
+  <text x="150" y="-150">d</text>
+  <text x="250" y="-150">e</text>
+  <!-- row2 -->
+  <text x="-150" y="-50">f</text>
+  <text x="-50" y="-50">g</text>
+  <text x="50" y="-50">h</text>
+  <text x="150" y="-50">i</text>
+  <text x="250" y="-50">j</text>
+  <!-- row3 -->
+  <text x="-150" y="50">k</text>
+  <text x="-50" y="50">l</text>
+  <text x="50" y="50">m</text>
+  <text x="50" y="30">30</text>
+  <text x="50" y="35">35</text>
+  <text x="50" y="40">40</text>
+  <text x="50" y="45">45</text>
+  <text x="50" y="55">55</text>
+  <text x="50" y="60">60</text>
+  <text x="50" y="65">65</text>
+  <text x="50" y="70">70</text>
+  <text x="50" y="75">75</text>
+  <text x="50" y="80">80</text>
+  <text x="50" y="85">85</text>
+  <text x="50" y="90">90</text>
+  <text x="50" y="95">95</text>
+  <text x="30" y="50">30</text>
+  <text x="35" y="50">35</text>
+  <text x="40" y="50">40</text>
+  <text x="45" y="50">45</text>
+  <text x="55" y="50">55</text>
+  <text x="55" y="50">55</text>
+  <text x="60" y="50">60</text>
+  <text x="65" y="50">65</text>
+  <text x="70" y="50">70</text>
+  <text x="75" y="50">75</text>
+  <text x="80" y="50">80</text>
+  <text x="85" y="50">85</text>
+  <text x="90" y="50">90</text>
+  <text x="95" y="50">95</text>
+  <text x="150" y="50">n</text>
+  <text x="250" y="50">o</text>
+  <!-- row4 -->
+  <text x="-150" y="150">p</text>
+  <text x="-50" y="150">q</text>
+  <text x="50" y="150">r</text>
+  <text x="150" y="150">s</text>
+  <text x="250" y="150">t</text>
+  <!-- row5 -->
+  <text x="-150" y="250">u</text>
+  <text x="-50" y="250">v</text>
+  <text x="50" y="250">w</text>
+  <text x="150" y="250">x</text>
+  <text x="250" y="250">y</text>
+  </g>
+  </g> <!-- ******************* channels group *************** -->
+  </g><!--opening-->
+</svg>
+</div>
+
+
+<!-- space: webgl default width:100vw; height:100vh z-index: 100 -->
+<!-- webgl perspective-camera and lights -->
+<!-- dolly, rotate, pan-tilt-roll scale-zoom -->
+<canvas id="3D" class="space" ></canvas>
+
+</div><!--class='prizm'-->
+
+
+
+<!-- library scripts -->
+<script src="./libs/jquery/jquery.min.js"></script>
+<script src="./libs/angular/angular.min.js"></script>
+<script src="./libs/angular-ui-router/release/angular-ui-router.min.js"></script>
+<script src="./libs/d3/d3.min.js"></script>
+<!-- <script src="./libs/crossfilter/crossfilter.min.js"></script>
+<script src="./libs/dc/dc.min.js"></script>-->
+
+    <script src="./libs/d3/topojson.js"></script>
+    <script src="./libs/d3/d3.geo.projection.min.js"></script>
+    <script src="./libs/d3/d3.layout.cloud.js"></script>
+<!-- <script src="./libs/vega/vega.min.js"></script> -->
+<!-- modified vega.js -->
+<script src="./libs/vega/vega_no_divwrap.js"></script> 
+<script src="./libs/snap.svg/dist/snap.svg-min.js"></script>
+<script src="./libs/audio/mespeak.js"></script>
+<script type="text/javascript">
+meSpeak.loadConfig("./libs/audio/mespeak_config.json");
+meSpeak.loadVoice("./libs/audio/voices/en/en-us.json");
+meSpeak.loadVoice("./libs/audio/voices/fr.json");
+meSpeak.loadVoice("./libs/audio/voices/de.json");
+</script>
+
+<!-- socket.io - for Mediator - need update of client Socket.io code -->
+<!-- currently using socket.io.js v0.9.16 (rest of dist is v1.0.6) -->
+<!-- <script src="../socket.io.js"></script> -->
+
+<!-- util -->
+<script src="./utils/display_object.js" ></script>
+
+<!-- KO angular scripts -->
+<script src="./scripts/app.js" ></script>
+<script src="./scripts/controllers/narrative-mock-controller.js" ></script>
+<script src="./scripts/controllers/circle-controller.js" ></script>
+<script src="./scripts/controllers/scene-controller.js" ></script>
+<script src="./scripts/controllers/payments-controller.js" ></script>
+<script src="./scripts/controllers/barchart-controller.js" ></script>
+<script src="./scripts/controllers/scale-controller.js" ></script>
+<script src="./scripts/controllers/stocks-controller.js" ></script>
+<script src="./scripts/controllers/map-controller.js" ></script>
+<script src="./scripts/controllers/h_barchart-controller.js" ></script>
+<script src="./scripts/controllers/footprint-controller.js" ></script>
+<script src="./scripts/controllers/footprint-gb-controller.js" ></script>
+<script src="./scripts/controllers/area-controller.js" ></script>
+
+<script src="./scripts/services/mediator-service.js" ></script>
+<script src="./scripts/services/mixin-service.js" ></script>
+<script src="./scripts/services/clone-service.js" ></script>
+<script src="./scripts/services/audio-service.js" ></script>
+<script src="./scripts/services/h_barchart-service.js" ></script>
+<script src="./scripts/services/chart-service.js" ></script>
+<script src="./scripts/services/countries-service.js" ></script>
+<script src="./scripts/services/log-service.js" ></script>
+
+<!-- sDs -->
+<script src="./sD/state_descriptors.js" ></script>
+
+
+
+<!-- score and communication of actions -->
+<!-- <script src="./scores/score.js"></script>
+-->
+<!-- 2D cinematography - Snap extensions-->
+<!-- <script src="./scripts/services/camera2D-service.js"></script>
+-->
+
+
+
+<!-- inline sensors -->
+<script type="text/javascript"> 
+  // vars
+  var down = false;
+
+  // mousedown/mouseup
+  $(document).mousedown(function() {
+    down = true;
+    console.log("down = " + down);
+  }).mouseup(function() {
+    down = false;  
+  });
+
+  // resize
+  window.onresize = function(event) {
+    jQuery('.mediaweb').css({width: '100vw', height: '100vh'});
+    console.log("resize");
+  };
+</script>
+</body>
+</html>

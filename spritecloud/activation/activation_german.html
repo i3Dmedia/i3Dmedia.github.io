@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>three.js css3d - panorama</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+      body {
+        background-color: #000000;
+        margin: 0;
+        cursor: move;
+        overflow: hidden;
+        width=100vw;
+        height=100vh; 
+      }
+
+      #space {
+        left: 0vw;
+        top: 0vh;
+        width: 100vw;
+        height: 100vh;
+        display: block;
+        position: fixed;
+        pointer-events: none; // auto
+        background-color: transparent;
+        z-index: 5; //0
+      }
+    </style>
+  </head>
+  <body id="b">
+    <canvas id="space"></canvas>
+
+    <script src="../libs/three.js"></script>
+    <script src="../libs/CSS3DRenderer.js"></script>
+    <script src="../libs/TrackballControls.js"></script>
+    <script src="../libs/FlyControls.js"></script>
+    <script src="../libs/tween.js"></script>
+    <script src="../libs/audio/mespeak.js"></script>
+
+    <script>
+      var camera, 
+           controlsCss,
+           sceneCss, 
+           rendererCss,
+           controlsGl,
+           sceneGl, 
+           rendererGl,
+           canvas = document.getElementById("space"),
+           gl,
+           clearColor = 0x000000,    // default
+           alpha = 0.0,      // default 
+           fov = 90.0,      
+           particlesTotal = 512,  //256
+           particlesTotalHalf = 256,  //128
+           positions = [],
+           objects = [],
+           current = 0;
+           webgl_active = false; // turns on VR webGL rendering
+      const TWOPI = 2*Math.PI,
+            MORPH_TARGETS = 9;
+      var geometry, 
+          material, 
+          mesh,
+          cube1,
+          cube2;
+      var target = new THREE.Vector3();
+          lon = 90, 
+          lat = 0,
+          phi = 0, 
+          theta = 0;
+      var touchX, 
+          touchY;
+
+      // english/englishF
+      // auxiliary function to wrap single text as array
+      var bracket = function(text){
+        return Array.isArray(text) ? text : [text];
+      };
+      var englishF = (text) => {
+        var parts = [];
+        bracket(text).forEach(function(t, i){
+          parts[i] = { text: t, voice: "en/en-us", variant: "m3"};
+        });
+        meSpeak.speakMultipart(parts, {pitch: 120, speed: 120}, null, null);
+      }
+      var francaise = (text) => {
+        var parts = [];
+        bracket(text).forEach(function(t, i){
+          parts[i] = { text: t, voice: "fr", variant: "f5"};
+        });
+        meSpeak.speakMultipart(parts, {pitch: 60, speed: 100}, null, null);
+      }
+      var deutsch = (text) => {
+        var parts = [];
+        bracket(text).forEach(function(t, i){
+          parts[i] = { text: t, voice: "de", variant: "m3"};
+        });
+        meSpeak.speakMultipart(parts, {pitch: 40, speed: 120}, null, null);
+      }
+
+
+
+      function init() {
+        camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 2000 );
+        camera.position.set(16, 10, 65);   //z=65
+        controlsCss = new THREE.TrackballControls(camera);
+
+        sceneGl = new THREE.Scene();
+        sceneCss = new THREE.Scene();
+
+
+        // *******************************
+        // css3D iframe 'monitor'
+        // *******************************
+        var size_x = 400;
+        var size_y = 490;
+        var element = document.createElement('iframe');
+        element.src = 'http://i3Dmedia.org/magicleap/activation/sprites_moon_red_512_9.html';
+        element.style.width = size_x + 'px';
+        element.style.height = size_y + 'px';
+    
+        // expt
+        element.style.zIndex = "1";
+    
+        var object = new THREE.CSS3DObject(element);
+        object.position.set(0,0,0);
+        object.scale.x = 0.1;
+        object.scale.y = 0.1;
+        object.side = THREE.DoubleSide;
+        sceneCss.add(object);
+
+    
+        // webGL plane
+        material = new THREE.MeshBasicMaterial({
+            color: 0x000000,
+            opacity: 0.0,
+            side: THREE.DoubleSide
+        });
+        geometry = new THREE.PlaneGeometry(size_x, size_y);
+        mesh = new THREE.Mesh(geometry, material);
+        mesh.position.copy(object.position);
+        mesh.rotation.copy(object.rotation);
+        mesh.scale.copy(object.scale);
+        sceneGl.add(mesh);
+        // *******************************
+
+
+        // skybox
+        var sides = [
+          {
+            url: '../images/cube/MilkyWay/dark-s_px.jpg',
+            position: [ -512, 0, 0 ],
+            rotation: [ 0, Math.PI / 2, 0 ]
+          },
+          {
+            url: '../images/cube/MilkyWay/dark-s_nx.jpg',
+            position: [ 512, 0, 0 ],
+            rotation: [ 0, -Math.PI / 2, 0 ]
+          },
+          {
+            url: '../images/cube/MilkyWay/dark-s_py.jpg',
+            position: [ 0,  512, 0 ],
+            rotation: [ Math.PI / 2, 0, Math.PI ]
+          },
+          {
+            url: '../images/cube/MilkyWay/dark-s_ny.jpg',
+            position: [ 0, -512, 0 ],
+            rotation: [ - Math.PI / 2, 0, Math.PI ]
+          },
+          {
+            url: '../images/cube/MilkyWay/dark-s_pz.jpg',
+            position: [ 0, 0,  512 ],
+            rotation: [ 0, Math.PI, 0 ]
+          },
+          {
+            url: '../images/cube/MilkyWay/dark-s_nz.jpg',
+            position: [ 0, 0, -512 ],
+            rotation: [ 0, 0, 0 ]
+          }
+        ];
+
+        for ( var i = 0; i < sides.length; i ++ ) {
+          var side = sides[ i ];
+          var element = document.createElement( 'img' );
+          element.width = 1026; // 2 pixels extra to close the gap.
+          element.src = side.url;
+          var object = new THREE.CSS3DObject( element );
+          object.position.fromArray( side.position );
+          object.rotation.fromArray( side.rotation );
+          sceneCss.add( object );
+
+          // expt
+          element.style.zIndex = 0;
+        }
+
+        // CSS
+        rendererCss = new THREE.CSS3DRenderer();
+        rendererCss.setSize( window.innerWidth, window.innerHeight );
+        document.body.appendChild( rendererCss.domElement );
+
+        // webGL
+        gl = canvas.getContext("webgl", {premultipliedAlpha: false});
+        rendererGl = new THREE.WebGLRenderer({canvas: canvas, antialias: true, alpha: true}); // transparent
+        rendererGl.setClearColor(0x000000, 0); // default values
+        rendererGl.setSize( window.innerWidth, window.innerHeight );
+        console.log(`rendererGl = ${rendererGl}`);
+
+        // simple initial webGL objects
+//        var _geometry = new THREE.BoxGeometry(1, 1, 5);
+//        var _material = new THREE.MeshBasicMaterial({color:0xff0000});
+//        cube1 = new THREE.Mesh(_geometry, _material);
+//        cube1.position.copy(new THREE.Vector3(0,0,40));
+//
+//         _material = new THREE.MeshBasicMaterial({color:0x00ff00});
+//        cube2 = new THREE.Mesh(_geometry, _material);
+//        cube2.position.copy(new THREE.Vector3(0,0,-40));
+//        sceneGl.add(cube1 );
+//        sceneGl.add(cube2 );
+//        console.log(`cube1 = ${cube1}`);
+//        console.log(`cube2 = ${cube2}`);
+
+        //NOTE: critical - must make canvas a child of the CSS3DRenderer div
+        rendererCss.domElement.appendChild(rendererGl.domElement);
+
+        //NOTE: critical - must turn off pointer-events on canvas or it will
+        // consume all events before getting to CSS3DRenderer.domElement
+        // turn them on again in window.f() called by iframe
+        // Since WebglRenderer.domElement is a child of  
+        // Css3DRenderer.domElement, events will 'bubble up' to the div
+        // if rendererGl.domElement.style.pointerEvents = "none";
+        rendererGl.domElement.style.pointerEvents = "none";
+
+
+        // events
+        document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+        document.addEventListener( 'mousewheel', onDocumentMouseWheel, false );
+
+        document.addEventListener( 'touchstart', onDocumentTouchStart, false );
+        document.addEventListener( 'touchmove', onDocumentTouchMove, false );
+
+        window.addEventListener( 'resize', onWindowResize, false );
+
+        // start
+        setTimeout(() => {
+          animate();
+        }, 2000);
+      }//init
+
+
+      function init_vr() {
+        var radius,
+            material1,
+            material2,
+            i,
+            onLoad2 = (map2) => {
+              console.log(`map2 = ${map2}`);
+              material2 = new THREE.SpriteMaterial({map:map2});
+              for ( var i = 0; i < particlesTotalHalf; i ++ ) {
+                var sprite2 = new THREE.Sprite(material2);
+                sprite2.position.x = Math.random() * 4000 - 2000,
+                sprite2.position.y = Math.random() * 4000 - 2000,
+                sprite2.position.z = Math.random() * 4000 - 2000;
+                //sprite2.scale.set(10.0, 10.0, 10.0); //10,10,10
+                sceneGl.add(sprite2);
+                objects.push(sprite2 );
+              }
+              console.log(`objects.length = ${objects.length}`);
+              transition();
+            },
+            onLoad1 = (map1) => {
+              console.log(`map1 = ${map1}`);
+              material1 = new THREE.SpriteMaterial({map:map1,
+                  useScreenCoordinates:true});
+              for ( var i = 0; i < particlesTotalHalf; i ++ ) {
+                var sprite1 = new THREE.Sprite(material1);
+                sprite1.position.x = Math.random() * 4000 - 2000,
+                sprite1.position.y = Math.random() * 4000 - 2000,
+                sprite1.position.z = Math.random() * 4000 - 2000;
+                //sprite1.scale.set(10.0, 10.0, 10.0); //10,10,10
+                sceneGl.add(sprite1);
+                objects.push(sprite1 );
+              }
+              (new THREE.TextureLoader()).load("../images/sprite_redlight.png", onLoad2);
+            };
+
+        (new THREE.TextureLoader()).load("../images/sprite_moon.png", onLoad1);          
+
+        camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
+        camera.position.set( 16, 10, 1200 ); // 100 // 2000 //1200
+        camera.lookAt( new THREE.Vector3() );
+
+        sceneGl = new THREE.Scene();
+
+
+        // 9 morph-targets
+        // Plane
+        var amountX = 16;
+        var amountZ = 32;
+        var separation = 150;
+        var offsetX = ( ( amountX - 1 ) * separation ) / 2;
+        var offsetZ = ( ( amountZ - 1 ) * separation ) / 2;
+        for ( var i = 0; i < particlesTotal; i ++ ) {
+          var x = ( i % amountX ) * separation;
+          var z = Math.floor( i / amountX ) * separation;
+          var y = ( Math.sin( x * 0.5 ) + Math.sin( z * 0.5 ) ) * 200;
+          positions.push( x - offsetX, y, z - offsetZ );
+        }
+
+        // Cube
+        var amount = 8;
+        var separation = 150;
+        var offset = ( ( amount - 1 ) * separation ) / 2;
+        for ( var i = 0; i < particlesTotal; i ++ ) {
+          var x = ( i % amount ) * separation;
+          var y = Math.floor( ( i / amount ) % amount ) * separation;
+          var z = Math.floor( i / ( amount * amount ) ) * separation;
+          positions.push( x - offset, y - offset, z - offset );
+        }
+
+        // Sphere
+        radius = 750;
+        for ( var i = 0; i < particlesTotal; i ++ ) {
+          var phi = Math.acos( -1 + ( 2 * i ) / particlesTotal );
+          var theta = Math.sqrt( particlesTotal * Math.PI ) * phi;
+          positions.push(
+            radius * Math.cos( theta ) * Math.sin( phi ),
+            radius * Math.sin( theta ) * Math.sin( phi ),
+            radius * Math.cos( phi )
+          );
+        }
+
+        // Sphere2
+        radius = 750;
+        for ( var i = 0; i < particlesTotal; i ++ ) {
+          var phi = 3*Math.acos( -1 + ( 2 * i ) / particlesTotal );
+          var theta = 0.5 * Math.sqrt( particlesTotal * Math.PI ) * phi;
+          positions.push(
+            radius * Math.cos( theta ) * Math.sin( phi ),
+            radius * Math.sin( theta ) * Math.sin( phi ),
+            radius * Math.cos( phi )
+          );
+        }
+
+        // Helix1
+        radius = 300;
+        for ( var i = 0; i < particlesTotal; i ++ ) {
+          var p = i/particlesTotal;
+          positions.push(
+            radius * Math.cos(p * TWOPI),
+            2*p*radius - 300,
+            radius * Math.sin(p * TWOPI)
+          );
+        }
+
+        // Helix2
+        radius = 600;
+        for ( var j = 0; j < particlesTotal; j ++ ) {
+          if(j%2 === 0){
+            i = j;
+          }else{
+            i = particlesTotalHalf + j;
+          }
+          var p = i/particlesTotal;
+          positions.push(
+            radius * Math.cos(3*p * TWOPI),
+            2*p*radius - 600,
+            radius * Math.sin(3*p * TWOPI)
+          );
+        }
+
+        // Helix3
+        radius = 600;
+        for ( var j = 0; j < particlesTotal; j ++ ) {
+          if(j%2 === 0){
+            p = (j+particlesTotalHalf - particlesTotal)/particlesTotal;
+          }else{
+            p = j/particlesTotal;
+          }
+          positions.push(
+            radius * Math.cos(3*p * TWOPI),
+            2*p*radius - 600,
+            radius * Math.sin(3*p * TWOPI)
+          );
+        }
+
+        // Sphere2
+        radius = 300;
+        for ( var i = 0; i < particlesTotal; i ++ ) {
+          var phi = Math.acos( -1 + ( 2 * i ) / particlesTotal );
+          var theta = Math.sqrt( particlesTotal * Math.PI ) * phi;
+          positions.push(
+            radius * Math.cos( theta ) * Math.sin( phi ),
+            radius * Math.sin( theta ) * Math.sin( phi ),
+            2*radius * Math.cos( phi )
+          );
+        }
+
+        // Sphere3
+        radius = 300;
+        for ( var i = 0; i < particlesTotal; i ++ ) {
+          var phi = Math.acos( -1 + ( 2 * i ) / particlesTotal );
+          var theta = 0.5 * Math.sqrt( particlesTotal * Math.PI ) * phi;
+          positions.push(
+            0.5 * radius * Math.cos( theta ) * Math.sin( phi ),
+            4*radius * Math.sin( theta ) * Math.sin( phi ),
+            radius * Math.cos( phi )
+          );
+        }
+
+        // diagnostics
+        console.log(`positions.length = ${positions.length}`);
+
+
+        // webGLrenderer - rendererGL
+        //rendererGl = new THREE.WebGLRenderer({antialias:true, alpha:true});
+        rendererGl = new THREE.WebGLRenderer({canvas:canvas, antialias:true, alpha:true});
+        console.log(`rendererGl = ${rendererGl}`);
+        rendererGl.setSize( window.innerWidth, window.innerHeight );
+        rendererGl.setClearColor(new THREE.Color(0x000000, 1.0));
+        //rendererGl.domElement.style.position = 'absolute';
+        //document.getElementById( "space" ).appendChild( rendererGl.domElement );
+
+        // simple initial webGL objects
+//        var _geometry = new THREE.BoxGeometry(1, 1, 5);
+//        var _material = new THREE.MeshBasicMaterial({color:0xff0000});
+//        var cube1 = new THREE.Mesh(_geometry, _material);
+//        cube1.position.copy(new THREE.Vector3(0,0,10));
+//
+//         _material = new THREE.MeshBasicMaterial({color:0x00ff00});
+//        var cube2 = new THREE.Mesh(_geometry, _material);
+//        cube2.position.copy(new THREE.Vector3(0,0,-10));
+//        sceneGl.add(cube1 );
+//        sceneGl.add(cube2 );
+//        console.log(`cube1 = ${cube1}`);
+//        console.log(`cube2 = ${cube2}`);
+
+        // controls
+        controlsGl = new THREE.TrackballControls( camera, rendererGl.domElement );
+        controlsGl.rotateSpeed = 0.5;
+      }//init_vr
+
+
+
+      function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        rendererCss.setSize( window.innerWidth, window.innerHeight );
+        rendererGl.setSize( window.innerWidth, window.innerHeight );
+      }
+
+      function onDocumentMouseDown( event ) {
+        event.preventDefault();
+
+        document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+        document.addEventListener( 'mouseup', onDocumentMouseUp, false );
+      }
+
+      function onDocumentMouseMove( event ) {
+        var movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
+        var movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
+
+        lon -= movementX * 0.1;
+        lat += movementY * 0.1;
+      }
+
+      function onDocumentMouseUp( event ) {
+        document.removeEventListener( 'mousemove', onDocumentMouseMove );
+        document.removeEventListener( 'mouseup', onDocumentMouseUp );
+      }
+
+      function onDocumentMouseWheel( event ) {
+        camera.fov -= event.wheelDeltaY * 0.05;
+        camera.updateProjectionMatrix();
+      }
+
+      function onDocumentTouchStart( event ) {
+        event.preventDefault();
+
+        var touch = event.touches[ 0 ];
+        touchX = touch.screenX;
+        touchY = touch.screenY;
+      }
+
+      function onDocumentTouchMove( event ) {
+        event.preventDefault();
+
+        var touch = event.touches[ 0 ];
+        lon -= ( touch.screenX - touchX ) * 0.1;
+        lat += ( touch.screenY - touchY ) * 0.1;
+        touchX = touch.screenX;
+        touchY = touch.screenY;
+      }
+
+
+
+      function transition() {
+        var offset = current * particlesTotal * 3;
+        var duration = 2000;
+        for ( var i = 0, j = offset; i < particlesTotal; i ++, j += 3 ) {
+          var object = objects[ i ];
+          new TWEEN.Tween( object.position )
+              .to( {
+                x: positions[ j ],
+                y: positions[ j + 1 ],
+                z: positions[ j + 2 ]
+              }, Math.random() * duration + duration )
+              .easing( TWEEN.Easing.Exponential.InOut )
+              .start();
+        }
+
+        new TWEEN.Tween( this )
+            .to( {}, duration * 3 )
+            .onComplete( transition )
+            .start();
+        current = ( current + 1 ) % MORPH_TARGETS; // modulo total morph-targets
+        console.log(`current morphtarget is ${current}`);
+        console.log(`objects.length = ${objects.length}`);
+      }
+
+
+
+      function animate() {
+        var time,
+            object,
+            scale;
+
+        requestAnimationFrame( animate );
+        controlsCss.update();
+
+        if(webgl_active){
+          controlsGl.update();
+          TWEEN.update();
+          time = performance.now();
+
+          for ( var i = 0, l = objects.length; i < l; i ++ ) {
+            object = objects[ i ];
+            //var scale = Math.sin( ( Math.floor( object.position.x ) + time ) * 0.002 ) * 0.3 + 1;
+            scale = Math.sin( ( Math.floor( object.position.x ) + time ) * 0.002 ) * 0.3 + 100;  //200
+            object.scale.set( scale, scale, scale );
+          }
+          rendererGl.render(sceneGl, camera);
+        }
+
+        lon +=  0.005;
+        lat = Math.max( - 85, Math.min( 85, lat ) );
+        phi = THREE.Math.degToRad( 90 - lat );
+        theta = THREE.Math.degToRad( lon );
+
+        target.x = Math.sin( phi ) * Math.cos( theta );
+        target.y = Math.cos( phi );
+        target.z = Math.sin( phi ) * Math.sin( theta );
+        camera.lookAt( target );
+        rendererCss.render( sceneCss, camera );
+      }
+
+      // communication from iframe - start webgl spritecloud
+      // argument is last morphtarget in CSS3DRenderer of 'monitor'
+      window.f = (_current) => {
+        current = (_current - 1) % MORPH_TARGETS;
+        canvas.style.pointerEvents = "none";
+        document.getElementById("b").style.pointerEvents = "none";
+        console.log(`window.f! current morphtarget is ${current}`);
+        setTimeout(() => {
+          webgl_active = true;
+          camera.position.set(32, 20, 130); //*2
+        }, 800);
+        console.log(`window.f! webgl_active is ${webgl_active}`);
+        //controlsGl = new THREE.FlyControls(camera);
+        //controlsGl.movementSpeed = 25;
+        //controlsGl.domElement = document.querySelector("#space");
+        //controlsGl.rollSpeed = Math.PI / 24;
+        //controlsGl.autoForward = true;
+        //controlsGl.dragToLook = false;
+      }
+
+
+
+      // action
+      // load voice phonetics
+      meSpeak.loadConfig("../libs/audio/mespeak_config.json");
+      meSpeak.loadVoice("../libs/audio/voices/en/en-us.json", null);
+      meSpeak.loadVoice("../libs/audio/voices/fr.json", null);
+      meSpeak.loadVoice("../libs/audio/voices/de.json", null);
+
+      init_vr();
+      init();
+
+
+      setTimeout(() => {
+        //englishF("touch the green disk to begin activation");
+        //francaise("toucher le disque vert pour entamer le processus d'activation");
+        deutsch("Entschuldigen Sie bitte, klicken Sie auf den kleinen Kreis");
+        //deutsch("berühren Sie die grüne Scheibe um den Aktivierungsprozess zu beginnen");
+      },16000);
+    </script>
+  </body>
+</html>
+

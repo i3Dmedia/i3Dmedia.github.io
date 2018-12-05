@@ -1,0 +1,28 @@
+<unit id="u1-1-2">
+
+w; hat; bat:correct
+w; hat; fat:correct
+w; mat:correct; nat
+w; bat; pat:correct
+w; rap; rat:correct
+w; cot; cat:correct
+w; sat:correct; sap
+
+# VO's used in each exercise (one set for each cycle)
+# begin exercises
+# cycle 1
+v; b; a; t; bat
+v; f; a; t; fat
+v; m; a; t; mat
+v; p; a; t; pat
+v; r; a; t; rat
+v; c; a; t; cat
+v; s; a; t; sat
+
+# directions
+d; D010
+d; hat
+d; bat
+
+</unit>
+

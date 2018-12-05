@@ -1,0 +1,22 @@
+{
+  "name": "circle",
+  "model": {
+    "scene": {
+      "name":"circle",
+      "filters": { 
+        "year": {"range": {"a":0, "b":"INF"}},
+        "count": {"range": {"a":0, "b":"INF"}}
+      },
+      "rendering": "template", 
+      "update": true,
+      "x": "50", 
+      "y": "50", 
+      "r": "30", 
+      "fill": "red"
+    }
+  },
+  "shot" : {
+    "scene": {"transform": "translate(-50,-50)"} 
+  }
+}
+

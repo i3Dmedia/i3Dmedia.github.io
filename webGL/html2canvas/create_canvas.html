@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>html2canvas example</title>
+    <script src="../libs/html2canvas.js"></script>
+    <style>
+    canvas{border:1px solid #222}
+    </style>
+</head>
+<body>
+    <script>
+      var myFunction = function(){
+        console.log('click');
+      }
+    </script>
+    <h2>this is <b>bold</b> <span style="color:red">red</span></h2>
+    <button onclick="myFunction()">Click me</button>
+    <script type="text/javascript">
+      setTimeout(function(){
+        html2canvas( [ document.body ], {
+          onrendered: function(canvas) {
+            document.body.appendChild(canvas);
+          }
+        });
+      },1500)
+    </script>
+</body>
+</html>

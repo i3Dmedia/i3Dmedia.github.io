@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>webGLsprite-cloud morph-targets</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+      body {
+        background-color: #000033;
+        margin: 0;
+        font-family: Arial;
+        overflow: hidden;
+        z-index: 0;
+        pointer-events: auto;
+        width: 100vw;
+        height: 100vh;
+      }
+
+      #space {
+        left: 0vw;
+        top: 0vh;
+        width: 100vw;
+        height: 100vh;
+        display: block;
+        position: absolute;
+        pointer-events: auto;
+        background-color: transparent;
+        z-index: 5; //0 
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="space"></canvas>
+
+    <script src="../libs/three.js"></script>
+    <script src="../libs/tween.js"></script>
+    <script src="../libs/TrackballControls.js"></script>
+    <script>
+      var camera, 
+          sceneGl, 
+          rendererGl,
+          canvas = document.getElementById("space"),
+          controlsGl,
+          particlesTotal = 512,  //256
+          particlesTotalHalf = 256,  //128
+          positions = [],
+          objects = [],
+          current = 0,
+      const TWOPI = 2*Math.PI;
+        
+
+      function init_vr() {
+        var radius,
+            material1,
+            material2,
+            i,
+            onLoad2 = (map2) => {
+              console.log(`map2 = ${map2}`);
+              material2 = new THREE.SpriteMaterial({map:map2});
+              for ( var i = 0; i < particlesTotalHalf; i ++ ) {
+                var sprite2 = new THREE.Sprite(material2);
+                sprite2.position.x = Math.random() * 4000 - 2000,
+                sprite2.position.y = Math.random() * 4000 - 2000,
+                sprite2.position.z = Math.random() * 4000 - 2000;
+                sprite2.scale.set(10.0, 10.0, 10.0);
+                sceneGl.add(sprite2);
+                objects.push(sprite2 );
+              }
+              console.log(`objects.length = ${objects.length}`);
+              transition();
+            },
+            onLoad1 = (map1) => {
+              console.log(`map1 = ${map1}`);
+              material1 = new THREE.SpriteMaterial({map:map1,
+                  useScreenCoordinates:true});
+              for ( var i = 0; i < particlesTotalHalf; i ++ ) {
+                var sprite1 = new THREE.Sprite(material1);
+                sprite1.position.x = Math.random() * 4000 - 2000,
+                sprite1.position.y = Math.random() * 4000 - 2000,
+                sprite1.position.z = Math.random() * 4000 - 2000;
+                sprite1.scale.set(10.0, 10.0, 10.0);
+                sceneGl.add(sprite1);
+                objects.push(sprite1 );
+              }
+              (new THREE.TextureLoader()).load("../images/sprite_redlight.png", onLoad2);
+            };
+
+        (new THREE.TextureLoader()).load("../images/sprite_moon.png", onLoad1);          
+
+        camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
+        camera.position.set( 16, 10, 1200 ); // 100 // 2000 //1200
+        camera.lookAt( new THREE.Vector3() );
+
+        sceneGl = new THREE.Scene();
+
+
+        // 9 morph-targets
+        // Plane
+        var amountX = 16;
+        var amountZ = 32;
+        var separation = 150;
+        var offsetX = ( ( amountX - 1 ) * separation ) / 2;
+        var offsetZ = ( ( amountZ - 1 ) * separation ) / 2;
+        for ( var i = 0; i < particlesTotal; i ++ ) {
+          var x = ( i % amountX ) * separation;
+          var z = Math.floor( i / amountX ) * separation;
+          var y = ( Math.sin( x * 0.5 ) + Math.sin( z * 0.5 ) ) * 200;
+          positions.push( x - offsetX, y, z - offsetZ );
+        }
+
+        // Cube
+        var amount = 8;
+        var separation = 150;
+        var offset = ( ( amount - 1 ) * separation ) / 2;
+        for ( var i = 0; i < particlesTotal; i ++ ) {
+          var x = ( i % amount ) * separation;
+          var y = Math.floor( ( i / amount ) % amount ) * separation;
+          var z = Math.floor( i / ( amount * amount ) ) * separation;
+          positions.push( x - offset, y - offset, z - offset );
+        }
+
+        // Sphere
+        radius = 750;
+        for ( var i = 0; i < particlesTotal; i ++ ) {
+          var phi = Math.acos( -1 + ( 2 * i ) / particlesTotal );
+          var theta = Math.sqrt( particlesTotal * Math.PI ) * phi;
+          positions.push(
+            radius * Math.cos( theta ) * Math.sin( phi ),
+            radius * Math.sin( theta ) * Math.sin( phi ),
+            radius * Math.cos( phi )
+          );
+        }
+
+        // Sphere2
+        radius = 750;
+        for ( var i = 0; i < particlesTotal; i ++ ) {
+          var phi = 3*Math.acos( -1 + ( 2 * i ) / particlesTotal );
+          var theta = 0.5 * Math.sqrt( particlesTotal * Math.PI ) * phi;
+          positions.push(
+            radius * Math.cos( theta ) * Math.sin( phi ),
+            radius * Math.sin( theta ) * Math.sin( phi ),
+            radius * Math.cos( phi )
+          );
+        }
+
+        // Helix1
+        radius = 300;
+        for ( var i = 0; i < particlesTotal; i ++ ) {
+          var p = i/particlesTotal;
+          positions.push(
+            radius * Math.cos(p * TWOPI),
+            2*p*radius - 300,
+            radius * Math.sin(p * TWOPI)
+          );
+        }
+
+        // Helix2
+        radius = 600;
+        for ( var j = 0; j < particlesTotal; j ++ ) {
+          if(j%2 === 0){
+            i = j;
+          }else{
+            i = particlesTotalHalf + j;
+          }
+          var p = i/particlesTotal;
+          positions.push(
+            radius * Math.cos(3*p * TWOPI),
+            2*p*radius - 600,
+            radius * Math.sin(3*p * TWOPI)
+          );
+        }
+
+        // Helix3
+        radius = 600;
+        for ( var j = 0; j < particlesTotal; j ++ ) {
+          if(j%2 === 0){
+            p = (j+particlesTotalHalf - particlesTotal)/particlesTotal;
+          }else{
+            p = j/particlesTotal;
+          }
+          positions.push(
+            radius * Math.cos(3*p * TWOPI),
+            2*p*radius - 600,
+            radius * Math.sin(3*p * TWOPI)
+          );
+        }
+
+        // Sphere2
+        radius = 300;
+        for ( var i = 0; i < particlesTotal; i ++ ) {
+          var phi = Math.acos( -1 + ( 2 * i ) / particlesTotal );
+          var theta = Math.sqrt( particlesTotal * Math.PI ) * phi;
+          positions.push(
+            radius * Math.cos( theta ) * Math.sin( phi ),
+            radius * Math.sin( theta ) * Math.sin( phi ),
+            2*radius * Math.cos( phi )
+          );
+        }
+
+        // Sphere3
+        radius = 300;
+        for ( var i = 0; i < particlesTotal; i ++ ) {
+          var phi = Math.acos( -1 + ( 2 * i ) / particlesTotal );
+          var theta = 0.5 * Math.sqrt( particlesTotal * Math.PI ) * phi;
+          positions.push(
+            0.5 * radius * Math.cos( theta ) * Math.sin( phi ),
+            4*radius * Math.sin( theta ) * Math.sin( phi ),
+            radius * Math.cos( phi )
+          );
+        }
+
+        // diagnostics
+        console.log(`positions.length = ${positions.length}`);
+
+
+        // webGLrenderer - rendererGL
+        //rendererGl = new THREE.WebGLRenderer({antialias:true, alpha:true});
+        rendererGl = new THREE.WebGLRenderer({canvas:canvas, antialias:true, alpha:true});
+        console.log(`rendererGl = ${rendererGl}`);
+        rendererGl.setSize( window.innerWidth, window.innerHeight );
+        rendererGl.setClearColor(new THREE.Color(0x000000, 1.0));
+        //rendererGl.domElement.style.position = 'absolute';
+        //document.getElementById( "space" ).appendChild( rendererGl.domElement );
+
+        // simple initial webGL objects
+//        var _geometry = new THREE.BoxGeometry(1, 1, 5);
+//        var _material = new THREE.MeshBasicMaterial({color:0xff0000});
+//        var cube1 = new THREE.Mesh(_geometry, _material);
+//        cube1.position.copy(new THREE.Vector3(0,0,10));
+//
+//         _material = new THREE.MeshBasicMaterial({color:0x00ff00});
+//        var cube2 = new THREE.Mesh(_geometry, _material);
+//        cube2.position.copy(new THREE.Vector3(0,0,-10));
+//        sceneGl.add(cube1 );
+//        sceneGl.add(cube2 );
+//        console.log(`cube1 = ${cube1}`);
+//        console.log(`cube2 = ${cube2}`);
+
+        // controls
+        controlsGl = new THREE.TrackballControls( camera, rendererGl.domElement );
+        controlsGl.rotateSpeed = 0.5;
+
+        // resize
+        window.addEventListener( 'resize', onWindowResize, false );
+
+        // start
+        setTimeout(() => {
+          animate();
+        }, 2000);
+      }
+
+      function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        rendererGl.setSize( window.innerWidth, window.innerHeight );
+      }
+
+
+      function transition() {
+        var offset = current * particlesTotal * 3;
+        var duration = 2000;
+        for ( var i = 0, j = offset; i < particlesTotal; i ++, j += 3 ) {
+          var object = objects[ i ];
+          new TWEEN.Tween( object.position )
+              .to( {
+                x: positions[ j ],
+                y: positions[ j + 1 ],
+                z: positions[ j + 2 ]
+              }, Math.random() * duration + duration )
+              .easing( TWEEN.Easing.Exponential.InOut )
+              .start();
+        }
+
+        new TWEEN.Tween( this )
+            .to( {}, duration * 3 )
+            .onComplete( transition )
+            .start();
+        current = ( current + 1 ) % 9; // modulo total morph-targets
+        console.log(`current morphtarget is ${current}`);
+        console.log(`objects.length = ${objects.length}`);
+      }
+
+      function animate() {
+        requestAnimationFrame( animate );
+        TWEEN.update();
+        controlsGl.update();
+        var time = performance.now();
+
+        for ( var i = 0, l = objects.length; i < l; i ++ ) {
+          var object = objects[ i ];
+          //var scale = Math.sin( ( Math.floor( object.position.x ) + time ) * 0.002 ) * 0.3 + 1;
+          var scale = Math.sin( ( Math.floor( object.position.x ) + time ) * 0.002 ) * 0.3 + 200;
+          object.scale.set( scale, scale, scale );
+        }
+        rendererGl.render( sceneGl, camera );
+      }
+
+      // start
+      window.onload = init_vr;
+
+    </script>
+  </body>
+</html>

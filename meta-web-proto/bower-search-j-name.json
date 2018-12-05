@@ -1,0 +1,27 @@
+// bower search -j ui-router
+[
+  {
+    "name": "angular-ui-router",
+    "url": "git://github.com/angular-ui/ui-router"
+  },
+  {
+    "name": "bower-angular-ui-router",
+    "url": "git://github.com/clee704/bower-angular-ui-router"
+  },
+  {
+    "name": "mgo-ui-router-goto",
+    "url": "git://github.com/mgonto/mgo-ui-router-goto"
+  },
+  {
+    "name": "angular-ui-router.stateHelper",
+    "url": "git://github.com/marklagendijk/ui-router.stateHelper.git"
+  },
+  {
+    "name": "angoolar-ui-router",
+    "url": "git://github.com/OlenDavis/angoolar-ui-router.git"
+  },
+  {
+    "name": "angular-ui-router-anim-in-out",
+    "url": "git://github.com/homerjam/angular-ui-router-anim-in-out.git"
+  }
+]

@@ -1,0 +1,106 @@
+// channels.scss
+/*
+ * channels.css
+ * generated via sass/sass.bat from ../scss/channels.scss
+ */
+
+// variables
+$font: 'Neuropol';
+
+// mixins
+@mixin full_screen { 
+  left: 0vw;
+  top: 0vh;
+  width: 100vw;
+  height: 100vh;
+}
+
+
+
+/*
+ * document is at default z-index: 0, level = -INF 
+ */
+@font-face {
+  font-family: $font;
+  src: url(../fonts/neuropol.ttf); 
+}
+body {
+  @include full_screen;
+  overflow: hidden;
+  background-color: transparent;
+  z-index: 0; 
+}
+
+
+
+/* 
+ * mediaweb layers - 3
+ */
+
+/*
+ * webGL space - layer=BG dimension=3 z-index: 1, level = 0
+ * w:100vw h:100vh 
+ * 3D vector space with z-axis passing through center of svg stage
+ * uses right-hand coordinate system so positive z-axis points toward the
+ * user-camera, positive y-axis points up, positive x-axis points right
+ */
+.mediaweb .space {
+  @include full_screen;
+  display: block;
+  position: fixed;
+  pointer-events: none;
+  z-index: 1;
+}
+
+
+/*
+ * svg stage - layer=HUD-mid dimension=2 z-index: 10, level = 1
+ * w:100vw h:100vh 
+ * 2D vector space
+ * The root-svg element uses viewBox 100x100 vector space coordinates 
+ * set with upper-left corner at (-50,-50) so stage-center is at (0,0)
+ * 1x1 vsp unit = 1x1 viewport unit
+ * svg uses preserveAspectRatio = 'none' so despite the viewport
+ * size or aspect ratio the vector space remains isometric.
+ * 2D-cinematography by svg translation-dolly, scale-zoom, rotate-roll 
+ */
+.mediaweb .stage {
+  @include full_screen;
+  display: block;
+  position: fixed;
+  pointer-events: none; 
+  z-index: 10;
+}
+
+
+/*
+ * html UI - layer=TOP dimension=1 z-index: 100, level = 2
+ * controls associated with workspaces are permanent while others are
+ * state-based (workspace-based)
+ * Generally controls are visually transient coming into full clarity 
+ * on hover
+ */
+.mediaweb .ui {
+  position: absolute;
+  z-index: 100;
+}
+/* text */
+.mediaweb h1, h2, h3, h5, h6 { 
+  font-family: $font;
+  text-shadow: 0 -2px 3px #aaaaaa, 0 -4px 3px #666666;
+}
+.mediaweb h4 { 
+  font-family: $font;
+  text-shadow: 0 -1px 2px #aaaaaa, 0 -2px 2px #666666;
+}
+/* links */
+.mediaweb a {
+  font-family: $font;
+  /*font-family: 'calibri';*/
+  text-decoration: none;
+  color: #fff;
+}
+.mediaweb a:hover, a:active {
+  color: #9685BA; 
+}
+

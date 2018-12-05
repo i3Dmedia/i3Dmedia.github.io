@@ -1,0 +1,66 @@
+// app_initial_i3d-mf
+// index.html
+<!-- metaforms: recursive directive -->
+<i3d:metaform ng-repeat="(id, node) in actors.metaforms" 
+     id="{{id}}" 
+     {{node.form}}
+     i3d:textureurl="{{node.textureurl}}" 
+     i3d:x="{{node.x}}" 
+     i3d:y="{{node.y}}" 
+     i3d:z="{{node.z}}" 
+     i3d:depth="{{node.r}}" 
+     i3d:width="{{node.wsegments}}" 
+     i3d:height="{{node.hsegments}}" 
+     i3d:color="{{node.color}}" 
+     i3d:transparent="{{node.transparent}}"
+     i3d:opacity="{{node.opacity}}" 
+     ng-include="'metaform.i3d'" > 
+</i3d:metaform>
+
+<!-- metaform.i3d -->
+<script type="text/ng-template" id="metaform.i3d">
+  <g ng-if="node.children" >
+    <!__ @@delta - was node in node.children -->
+    <!__ @@delta - was id="{{node.id}}" -->
+    <i3d:metaform ng-repeat="(id, node) in node.children" 
+         id="{{id}}" 
+         {{node.form}}
+         i3d:textureurl="{{node.textureurl}}" 
+         i3d:x="{{node.x}}" 
+         i3d:y="{{node.y}}" 
+         i3d:z="{{node.z}}" 
+         i3d:depth="{{node.r}}" 
+         i3d:width="{{node.wsegments}}" 
+         i3d:height="{{node.hsegments}}" 
+         i3d:color="{{node.color}}" 
+         i3d:transparent="{{node.transparent}}",
+         i3d:opacity="{{node.opacity}}" 
+         ng-include="'metaform.i3d'" >
+    </i3d:metaform>
+  </g>
+</script> 
+
+// state-descriptors-service.js
+scene3D: {
+ id: "metaforms3D",
+ score: [],
+ actors: { // for i3d-templates, ng-repeat = '(k,v) in actors.*'    
+   // metaforms are named by id of root node - exp 'tree0'
+   // children are named by level-index exp: 0,1/00,01,10/000,...
+   metaforms: {
+     tree0: {form:"i3d-sphere", x:0.,y:50.,z:0.,r:30.,
+             visible:true, wireframe:true, 
+             transparent:false, opacity:1.0, color:"red",
+             children:{
+               0: {form:"i3d-sphere", x:-50.,y:100.,z:0.,r:30.,
+                   visible:true, wireframe:true, 
+                   transparent:false, opacity:1.0, color:"red",
+                   children:{}},
+               1: {form:"i3d-sphere", x:50.,y:100.,z:0.,r:30.,
+                   visible:true, wireframe:true, 
+                   transparent:false, opacity:1.0, color:"red",
+                   children:{}}
+             }}
+   },
+   //billboards, spheres, cubes, etc...
+}

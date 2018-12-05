@@ -1,0 +1,36 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"> 
+
+<defs>
+  <!-- gradient/mask -->
+  <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">  
+    <stop offset="10%"  stop-color="000"/>
+    <stop offset="35%"  stop-color="#202020"/>
+    <stop offset="100%" stop-color="#CCC"/>
+  </linearGradient> 
+  <mask id="mask" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">
+    <rect x="0" y="50" width="100" height="50" fill="url(#gradient)" />
+  </mask>
+</defs>
+
+
+<!-- reflect effect and grid - compensate for svg x=-50 y=-50  -->    
+<g id="top">
+  <rect x="0" y="0" width="100" height="48" fill="#DDF" />
+  <circle cx="16" cy="40" r="5" fill="#ff1000" />
+  <!--<text x="22" y="43" font-size="14px" font-family="sans-serif" fill="#AAF">Bluescape</text> -->
+  <text x="22" y="43" font-size="11px" font-family="neuropol" fill="#AAF">Bluescape</text>
+  <!--
+  <g id="vtext" font-family="neuropol" font-size="8.1pt" stroke="white" stroke-width="0.7">
+    <text x="45.8" y="5.0" style="writing-mode: tb; glyph-orientation-vertical: 0;">
+      b/~e  
+    </text>
+  </g>
+  -->
+</g>
+
+<!-- NOTE: 149 leaves nice white gap between object and reflection -->
+<g transform="translate(0, 149) scale(1 -1)" mask="url(#mask)">
+  <use xlink:href="#top" y="50" />
+</g>
+</svg>
+

@@ -1,0 +1,7 @@
+{"scope":"t2Scope",
+ "directions":[{"o":"audio","m":"play","a":"D010","t":"0"},
+                {"o":"hand","m":"moveTo","a":"hat","t":"500"},
+                {"o":"audio","m":"play","a":"hat","t":"0"},
+                {"o":"hand","m":"moveTo","a":"bat","t":"2000"},
+                {"o":"audio","m":"play","a":"bat","t":"0"},
+                {"o":"hand","m":"moveTo","a":"offstage","t":"500"}]}

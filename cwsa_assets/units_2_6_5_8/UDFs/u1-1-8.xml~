@@ -1,0 +1,77 @@
+<unit id="u1-1-8">
+
+
+
+#
+# pseudo-syntax for letters:
+#
+#   l; {display text}[;{vo label}][;{hexadecimal color code}]
+#
+# if vo label is missing, it defaults to "same as display text";
+# if color code is missing, it defaults to black (0x000000);
+
+
+l; m
+l; n
+l; f
+
+
+
+
+
+
+
+#
+# pseudo-syntax for exercises:
+#
+# e; {pic}[;{word}]
+#
+# {pic} is name of pic file (w/o extension .swf)
+# {word} is word to spell; can be omitted if same as pic file name
+#
+# examples:
+#
+# e; bat_baseball; bat
+# e; rat
+# e; hat; bonnet
+#
+
+
+
+e; bat_baseball; bat
+e; hat
+e; rat
+e; cat
+e; bat_rodent; bat
+e; pat
+e; sat
+
+
+
+s; say word: on
+
+
+
+# VO's used in each exercise (one set for each cycle)
+# cycle 1
+v; b; a; t; bat
+v; h; a; t; hat
+v; r; a; t; rat
+v; c; a; t; cat
+v; b; a; t; bat
+v; p; a; t; pat
+v; s; a; t; sat
+
+
+
+# general directions
+d; D014
+d; D017
+d; D002
+d; D013
+
+
+
+
+
+</unit>

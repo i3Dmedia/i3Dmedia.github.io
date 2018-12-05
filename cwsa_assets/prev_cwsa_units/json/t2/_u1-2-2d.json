@@ -1,0 +1,13 @@
+{"unit": "u1-2-2d",
+ "t":"t2",
+ "directions":[{"o":"Presentation","m":"speak","a":"D010"},
+                {"o":"Presentation","m":"pause","a":[1000, "callback"]},
+                {"o":"hand","m":"moveTo","a":"hat"},
+                {"o":"Presentation","m":"pause","a":[1000, "callback"]},
+                {"o":"Presentation","m":"speak","a":"hat"},
+                {"o":"Presentation","m":"pause","a":[1000, "callback"]},
+                {"o":"hand","m":"moveTo","a":"bat"},
+                {"o":"Presentation","m":"pause","a":[1000, "callback"]},
+                {"o":"Presentation","m":"speak","a":"bat"},
+                {"o":"Presentation","m":"pause","a":[1000, "callback"]},
+                {"o":"hand","m":"moveTo","a":"offstage"}]}

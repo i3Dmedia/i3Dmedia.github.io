@@ -1,0 +1,46 @@
+<unit id="u1-1-6">
+
+
+p; bat_baseball
+w; bad; fat; bat:correct
+
+p; rat
+w; rat:correct; ran; tar
+
+p; Nat
+w; nap; tan; Nat:correct
+
+p; pat
+w; pat:correct; bat; pad
+
+p; cat
+w; can; cat:correct; cab
+
+p; mat
+w; man; tam; mat:correct
+
+p; sat
+w; cat; sad; sat:correct
+
+
+
+
+# VO's used in each exercise (one set for each cycle)
+# begin exercises
+# cycle 1
+v; b; a; t; bat
+v; r; a; t; rat
+v; n; a; t; nat
+v; p; a; t; pat
+v; c; a; t; cat
+v; m; a; t; mat
+v; s; a; t; sat
+
+
+
+
+# directions
+d; D018
+d; D013
+
+</unit>

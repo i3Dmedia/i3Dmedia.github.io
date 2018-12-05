@@ -1,0 +1,38 @@
+Usage: sass [options] [INPUT] [OUTPUT]
+
+Description:
+  Converts SCSS or Sass files to CSS.
+
+Options:
+    -s, --stdin                      Read input from standard input instead of an input file
+        --trace                      Show a full traceback on error
+        --unix-newlines              Use Unix-style newlines in written files.
+        --scss                       Use the CSS-superset SCSS syntax.
+        --watch                      Watch files or directories for changes.
+                                     The location of the generated CSS can be set using a colon:
+                                       sass --watch input.sass:output.css
+                                       sass --watch input-dir:output-dir
+        --update                     Compile files or directories to CSS.
+                                     Locations are set like --watch.
+        --stop-on-error              If a file fails to compile, exit immediately.
+                                     Only meaningful for --watch and --update.
+        --poll                       Check for file changes manually, rather than relying on the OS.
+                                     Only meaningful for --watch.
+    -f, --force                      Recompile all Sass files, even if the CSS file is newer.
+                                     Only meaningful for --update.
+    -c, --check                      Just check syntax, don't evaluate.
+    -t, --style NAME                 Output style. Can be nested (default), compact, compressed, or expanded.
+        --precision NUMBER_OF_DIGITS How many digits of precision to use when outputting decimal numbers. Defaults to 3.
+    -q, --quiet                      Silence warnings and status messages during compilation.
+        --compass                    Make Compass imports available and load project configuration.
+    -g, --debug-info                 Emit extra information in the generated CSS that can be used by the FireSass Firebug plugin.
+    -l, --line-numbers               Emit comments in the generated CSS indicating the corresponding source line.
+        --line-comments
+    -i, --interactive                Run an interactive SassScript shell.
+    -I, --load-path PATH             Add a sass import path.
+    -r, --require LIB                Require a Ruby library before running Sass.
+        --cache-location PATH        The path to put cached Sass files. Defaults to .sass-cache.
+    -C, --no-cache                   Don't cache to sassc files.
+    -E encoding                      Specify the default encoding for Sass files.
+    -?, -h, --help                   Show this message
+    -v, --version                    Print version
